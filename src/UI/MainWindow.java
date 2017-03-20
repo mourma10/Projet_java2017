@@ -19,6 +19,7 @@ public class MainWindow extends JFrame implements ActionListener {
     private JPanel
             mainPanel /*Panneau principal*/,
             header /* Header*/,
+            menu /* Menu*/,
             footer /* Footer*/,
             panelLogin /* Panneau pour le formulaire d'authentification*/,
             panelContent/* Panneau qui va gerer le contenu de notre app*/,
@@ -216,6 +217,12 @@ public class MainWindow extends JFrame implements ActionListener {
         return activity;
     }
 
+    /**
+     * Retourne le panel qui va contenir le
+     * contenu de la page d'accueil du membre
+     *
+     * @return JPanel
+     */
     private JPanel accueilContent() {
         JPanel accueilContent = new JPanel();
         JPanel content = new JPanel();
@@ -373,11 +380,13 @@ public class MainWindow extends JFrame implements ActionListener {
 
     /**
      * Efface l'ecran d'authentification
+     * si l'authentification reussit
      */
     private void cleanEcranAuth() {
         header.remove(panelLogin);
         header.repaint();
-        header.add(this.menu(), BorderLayout.EAST);
+        menu = this.menu();
+        header.add(menu, BorderLayout.EAST);
         panelContent.remove(textEcranConnexion);
         panelContent.remove(cover);
         try {
@@ -425,22 +434,35 @@ public class MainWindow extends JFrame implements ActionListener {
                 formAdd.setVisible(false);
             if (formSearch.isVisible())
                 formSearch.setVisible(false);
-            this.actionConnexion();
+            if (!accueilContent.isVisible() || accueilContent.getParent() == null)
+                this.actionConnexion();
         }
         if (e.getSource() == addMember) {
             if (accueilContent.isVisible())
                 accueilContent.setVisible(false);
             if (formSearch.isVisible())
                 formSearch.setVisible(false);
-            this.actionAddMember();
+            if (!formAdd.isVisible() || formAdd.getParent() == null)
+                this.actionAddMember();
         }
         if (e.getSource() == searchMember) {
             if (accueilContent.isVisible())
                 accueilContent.setVisible(false);
             if (formAdd.isVisible())
                 formAdd.setVisible(false);
-            this.formSearch = this.formSearch();
-            panelContent.add(this.formSearch, BorderLayout.CENTER);
+            if (!formSearch.isVisible() || formSearch.getParent() == null) {
+                formSearch = this.formSearch();
+                panelContent.add(this.formSearch, BorderLayout.CENTER);
+            }
+        }
+        if (e.getSource() == deconnexion) {
+            panelContent.removeAll();
+            panelContent.repaint();
+            header.remove(menu);
+            header.repaint();
+            mainPanel.remove(cover);
+            mainPanel.repaint();
+            this.authentification();
         }
         this.pack();
     }
