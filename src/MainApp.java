@@ -11,7 +11,6 @@ public class MainApp {
         mainWindow.setVisible(true);
         mainWindow.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         mainWindow.authentification();
-        System.out.println("falkrwhghjarfgaygew");
 
     }
 }
