@@ -15,7 +15,7 @@ public class Operation {
         conn = DriverManager.getConnection(myUrl, "root", "root");
         st=conn.createStatement();
     }
-    public  void Connec(String login,String mdpasse) throws Exception{
+    public static void Connec(String login,String mdpasse) throws Exception{
         ResultSet rs;
         String requete;
         requete="select count(*) as nombre from membres where login=\""+login+"\"and mdpasse=\""+mdpasse+"\"";
