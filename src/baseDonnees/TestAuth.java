@@ -1,11 +1,11 @@
-package baseDonnees;
+package BaseDonnees;
 
 /**
  * Created by moussa on 21/03/2017.
  */
 public class TestAuth {
     public void Connecter(String login,String mdpasse) throws Exception{
-        operation d=new operation();
+        Operation d=new Operation();
         d.Connec(login,mdpasse);
     }
     public static void main(String[] args)

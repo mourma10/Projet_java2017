@@ -1,22 +1,25 @@
-package baseDonnees;
+package BaseDonnees;
 
 import java.sql.*;
 
 /**
  * Created by moussa on 21/03/2017.
  */
-public class operation {
+public class Operation {
     Connection conn;
-    Statement st;
-    public operation() throws ClassNotFoundException , SQLException{
+    static Statement st;
+
+    public Operation() throws ClassNotFoundException , SQLException{
         Class.forName("com.mysql.jdbc.Driver");
         String myUrl = "jdbc:mysql://localhost:8889/GestAnciens";
         conn = DriverManager.getConnection(myUrl, "root", "root");
         st=conn.createStatement();
     }
-    public void Connec(String login,String mdpasse) throws Exception{
-        String requete="select count(*) as nombre from membres where login=\""+login+"\"and mdpasse=\""+mdpasse+"\"";
-        ResultSet rs=st.executeQuery(requete);
+    public static void Connec(String login,String mdpasse) throws Exception{
+        ResultSet rs;
+        String requete;
+        requete="select count(*) as nombre from membres where login=\""+login+"\"and mdpasse=\""+mdpasse+"\"";
+        rs=st.executeQuery(requete);
         while (rs.next()){
             int nb=rs.getInt("nombre");
             if (nb==1)
@@ -25,5 +28,4 @@ public class operation {
                 System.out.println("Connexion refuse");
         }
     }
-
 }

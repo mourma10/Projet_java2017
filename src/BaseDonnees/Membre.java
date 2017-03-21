@@ -1,4 +1,7 @@
-import java.util.*
+package BaseDonnees;
+
+import java.util.Date;
+
 public class Membre {
 
 	private String login ;
@@ -14,7 +17,7 @@ public class Membre {
 	private Formation [] formation ;
 
 
-	public Membre (String login , String mdpasse , String prenom , 
+	public Membre (String login , String mdpasse , String prenom ,
 		String nom , Date dateNaiss , String email, String adresse , String tel ,
 		 String telBureau , String faxe , Formation... formation ) {
 
@@ -35,7 +38,7 @@ public class Membre {
 
 	}
 
-   // les getters 
+   // les getters
 
 	public String getLogin(){
 		return this.login ;

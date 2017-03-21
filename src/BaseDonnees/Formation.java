@@ -1,3 +1,5 @@
+package BaseDonnees;
+
 public class Formation {
 	
 	private int idFormation ;
