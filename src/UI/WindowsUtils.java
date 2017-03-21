@@ -14,7 +14,7 @@ class WindowUtils {
     static JPanel header() {
         JPanel test = new JPanel();
         test.setLayout(new BorderLayout());
-        test.setBackground(new Color(50, 50, 100));
+        test.setBackground(new Color(59, 89, 152));
         JLabel label = new JLabel("Association des Anciens de l'ESP\n");
         label.setFont(new Font("Helvetica Neue", Font.BOLD, 35));
         test.add(label, BorderLayout.WEST);

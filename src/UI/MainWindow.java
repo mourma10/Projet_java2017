@@ -17,16 +17,18 @@ public class MainWindow extends JFrame implements ActionListener {
      * aplication
      */
     private JPanel
-            mainPanel /*Panneau principal*/,
-            header /* Header*/,
-            menu /* Menu*/,
-            footer /* Footer*/,
-            panelLogin /* Panneau pour le formulaire d'authentification*/,
-            panelContent/* Panneau qui va gerer le contenu de notre app*/,
-            accueilContent /*Panneau qui va contenir les elements de la page d'accueil*/,
-            activity /* Panneau qui va contenir les activites de la personne connecte*/,
-            formAdd /* Panneau qui va contenir le formulaire d'ajout*/,
-            formSearch/*Panneau qui va contenir le formulaire de recherche*/;
+            mainPanel /*Panneau principal*/;
+    private JPanel header /* Header*/;
+    private JPanel menu /* Menu*/;
+    private final JPanel footer /* Footer*/;
+    private JPanel panelLogin /* Panneau pour le formulaire d'authentification*/;
+    private JPanel panelContent/* Panneau qui va gerer le contenu de notre app*/;
+    private JPanel accueilContent /*Panneau qui va contenir les elements de la page d'accueil*/;
+    private JPanel activity /* Panneau qui va contenir les activites de la personne connecte*/;
+    private JPanel formAdd /* Panneau qui va contenir le formulaire d'ajout*/;
+    private JPanel formSearch/*Panneau qui va contenir le formulaire de recherche*/;
+    private JPanel mainFormation;
+    private JPanel formation;
 
     /**
      * Boutons de notre application
@@ -42,14 +44,15 @@ public class MainWindow extends JFrame implements ActionListener {
             searchMember /* Bouton de navigation du menu qui charge
                             le formulaire de recherche*/,
             submitAddMember /* Bouton de validation pour l'ajout*/,
-            submitSearch /* Bouton de validation pour la recherche*/;
+            submitSearch /* Bouton de validation pour la recherche*/,
+            addFormation /* Permet d'ajouter une ou plusieurs autres formations*/;
 
     /**
      * Label utilises
      */
-    private JLabel
-            textEcranConnexion /* Text de l'ecran de Connexion*/,
-            cover /* Photo de couverture*/;
+    private final JLabel
+            textEcranConnexion /* Text de l'ecran de Connexion*/;
+    private JLabel cover /* Photo de couverture*/;
 
     /**
      * Zone de saisies
@@ -67,7 +70,6 @@ public class MainWindow extends JFrame implements ActionListener {
     private JFormattedTextField
             numPhone /* Numero telephone du membre */,
             dateBirth /* Date de naisance du membre */,
-            annee /* Annee formation suivie*/,
             faxe /* Faxe du memebre */,
             telOffice /* Telephone bureau du membre*/,
             numToSearch /* Numero du membre a chercher*/;
@@ -77,9 +79,17 @@ public class MainWindow extends JFrame implements ActionListener {
     private JComboBox<String>
             departements /*Departements */,
             niveau /*Niveau */,
-            options /*Options */;
+            options /*Options */,
+            annee /* Annee formation suivie*/;
 
-    private static Font myFont = new Font("Helvetica Neue", Font.BOLD, 15);
+    private String[]
+            selectedDepartement,
+            selectedOption,
+            selectedNiveau,
+            selectedAnnee;
+    private static int nbFormation = 0;
+
+    private static final Font myFont = new Font("Helvetica Neue", Font.BOLD, 15);
 
 
     /**
@@ -108,7 +118,7 @@ public class MainWindow extends JFrame implements ActionListener {
     private JPanel menu() {
         JPanel menu = new JPanel();
         menu.setLayout(new FlowLayout(FlowLayout.LEFT));
-        menu.setBackground(new Color(50, 50, 100));
+        menu.setBackground(new Color(59, 89, 152));
 
         accueil = new JButton("Accueil");
         searchMember = new JButton("Rechercher");
@@ -149,7 +159,7 @@ public class MainWindow extends JFrame implements ActionListener {
     private JPanel panelLogin() {
         JPanel panelLogin = new JPanel();
         panelLogin.setLayout(new FlowLayout(FlowLayout.LEFT));
-        panelLogin.setBackground(new Color(50, 50, 100));
+        panelLogin.setBackground(new Color(59, 89, 152));
 
         JLabel labelLogin = new JLabel("Login ");
         JLabel labelPasswd = new JLabel("Mot de passe ");
@@ -191,10 +201,7 @@ public class MainWindow extends JFrame implements ActionListener {
         } catch (IOException io) {
             io.printStackTrace();
         }
-        panelContent.setBackground(Color.CYAN);
-        JScrollPane bar = new JScrollPane(panelContent);
-        bar.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        mainPanel.add(bar);
+        panelContent.setBackground(new Color(216, 223, 234));
         mainPanel.add(panelContent, BorderLayout.CENTER);
         this.pack();
     }
@@ -227,7 +234,7 @@ public class MainWindow extends JFrame implements ActionListener {
         JPanel accueilContent = new JPanel();
         JPanel content = new JPanel();
         content.setLayout(new BoxLayout(content, BoxLayout.PAGE_AXIS));
-        content.setBackground(Color.CYAN);
+        content.setBackground(new Color(216, 223, 234));
         JLabel pic;
         accueilContent.setLayout(new BorderLayout());
         try {
@@ -239,8 +246,86 @@ public class MainWindow extends JFrame implements ActionListener {
         } catch (IOException io) {
             io.printStackTrace();
         }
-        accueilContent.setBackground(Color.CYAN);
+        accueilContent.setBackground(new Color(216, 223, 234));
         return accueilContent;
+    }
+
+    private JPanel formFormation() {
+        JPanel formation = new JPanel();
+        String[] libDep = {"", "Genie Informatique", "Genie Mecanique", "Genie Electrique",
+                "Genie Civil", "Genie Chimique et BA", "Gestion"},
+                libNiveau = {"", "DUT", "DST", "DIC", "DESCAF", "DEC", "DIT"},
+                libOption = {"", "Informatique", "Telecoms et Reseaux",
+                        "Biologie Appliquee", "Civil", "Mecanique"};
+        formation.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        departements = new JComboBox<>();
+        niveau = new JComboBox<>();
+        options = new JComboBox<>();
+        annee = new JComboBox<>();
+
+        selectedDepartement = new String[3];
+        selectedOption = new String[3];
+        selectedNiveau = new String[3];
+        selectedAnnee = new String[3];
+
+        for (int i = 0; i < 6; i++)
+            departements.addItem(libDep[i]);
+        for (int i = 0; i < 6; i++)
+            niveau.addItem(libNiveau[i]);
+        for (int i = 0; i < 5; i++)
+            options.addItem(libOption[i]);
+        for (int i = 1960; i < 2017; i++)
+            annee.addItem(String.valueOf(i));
+        new JScrollPane(annee);
+
+        departements.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                selectedDepartement[nbFormation] = (String) e.getItem();
+                switch (selectedDepartement[nbFormation]) {
+                    case "Genie Informatique":
+                        options.removeItem("Biologie Appliquee");
+                        options.removeItem("Civil");
+                        options.removeItem("Mecanique");
+                        break;
+
+                    case "Genie Civil":
+                        options.addItem("Civil");
+                        options.removeItem("Informatique");
+                        options.removeItem("Telecoms et Reseaux");
+                        break;
+
+                    case "Genie Mecanique":
+                        options.addItem("Mecanique");
+                }
+            }
+        });
+
+        niveau.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED)
+                selectedNiveau[nbFormation] = (String) e.getItem();
+        });
+
+        options.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED)
+                selectedOption[nbFormation] = (String) e.getItem();
+        });
+
+        annee.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED)
+                selectedAnnee[nbFormation] = (String) e.getItem();
+        });
+        formation.add(new JLabel("Departements"));
+        formation.add(departements);
+        formation.add(new JLabel("Options"));
+        formation.add(options);
+        formation.add(new JLabel("Niveau"));
+        formation.add(niveau);
+
+        formation.add(new JLabel("Annee"));
+        formation.add(annee);
+
+        formation.setBackground(Color.WHITE);
+        return formation;
     }
 
     /**
@@ -250,17 +335,19 @@ public class MainWindow extends JFrame implements ActionListener {
      */
     private JPanel formAdd() {
         /*Mise en place des sections et du JPanel qui sera retourne*/
-        JPanel formAdd, privacy, formation, contact, infoAuth;
+        JPanel formAdd, privacy, contact, infoAuth;
         formAdd = new JPanel();
         infoAuth = new JPanel();
         privacy = new JPanel();
         contact = new JPanel();
         formation = new JPanel();
+        mainFormation = new JPanel();
+        mainFormation.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
         formAdd.setLayout(new BoxLayout(formAdd, BoxLayout.PAGE_AXIS));
         infoAuth.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
         privacy.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
         contact.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        formation.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        formation.setLayout(new BoxLayout(formation, BoxLayout.PAGE_AXIS));
 
         /*Section login et mot de passe*/
         infoAuth.add(new JLabel("Login"));
@@ -269,7 +356,8 @@ public class MainWindow extends JFrame implements ActionListener {
         infoAuth.add(new JLabel("Mot de passe"));
         infoAuth.add(passwdMember = new JTextField(15));
         passwdMember.setPreferredSize(new Dimension(15, 30));
-        infoAuth.setBorder(WindowUtils.myBorder("Login et Mot de passe", new Color(50, 50, 100), 5));
+        infoAuth.setBorder(WindowUtils.myBorder("Login et Mot de passe",
+                new Color(59, 89, 152), 2));
         infoAuth.setBackground(Color.WHITE);
 
         /*Section informations personnelles*/
@@ -286,7 +374,7 @@ public class MainWindow extends JFrame implements ActionListener {
         privacy.add(dateBirth = new JFormattedTextField(NumberFormat.getIntegerInstance()));
         dateBirth.setPreferredSize(new Dimension(150, 30));
         privacy.setBorder(WindowUtils.myBorder("Informations Personnelles",
-                new Color(50, 50, 100), 5));
+                new Color(59, 89, 152), 2));
         privacy.setBackground(Color.WHITE);
 
         /*Section contact*/
@@ -303,45 +391,23 @@ public class MainWindow extends JFrame implements ActionListener {
         contact.add(telOffice = new JFormattedTextField(NumberFormat.getIntegerInstance()));
         telOffice.setPreferredSize(new Dimension(150, 30));
         contact.setBorder(WindowUtils.myBorder("Contact",
-                new Color(50, 50, 100), 5));
+                new Color(59, 89, 152), 2));
         contact.setBackground(Color.WHITE);
 
         /*Section formations*/
-        formation.add(new JLabel("Departements"));
-        departements = new JComboBox<>();
-        departements.addItem("Genie Informatique");
-        departements.addItem("Genie Mecanique");
-        departements.addItem("Genie Electrique");
-        departements.addItem("Genie Civil");
-        departements.addItem("Genie Chimique et BA");
-        departements.addItem("Gestion");
-        formation.add(departements);
-        formation.add(new JLabel("Niveau"));
-        niveau = new JComboBox<>();
-        niveau.addItem("DUT");
-        niveau.addItem("DST");
-        niveau.addItem("DIC");
-        niveau.addItem("DESCAF");
-        niveau.addItem("DEC");
-        niveau.addItem("DIT");
-        formation.add(niveau);
-        formation.add(new JLabel("Options"));
-        options = new JComboBox<>();
-        options.addItem("Informatique");
-        options.addItem("Telecoms et Reseaux");
-        options.addItem("Biologie Appliquee");
-        options.addItem("Civil");
-        options.addItem("Mecanique");
-        formation.add(options);
-        formation.add(new JLabel("Annee"));
-        formation.add(annee = new JFormattedTextField(NumberFormat.getIntegerInstance()));
-        annee.setPreferredSize(new Dimension(150, 30));
-        formation.setBorder(WindowUtils.myBorder("Formations Suivies", new Color(50, 50, 100), 5));
+        addFormation = new JButton("+Ajouter une formation");
+        addFormation.addActionListener(this);
         formation.setBackground(Color.WHITE);
+        formation.add(this.formFormation());
+        formation.setBorder(WindowUtils.myBorder("Formations Suivies",
+                new Color(59, 89, 152), 2));
+        addFormation.setBackground(new Color(216, 223, 234));
+        formation.add(addFormation);
+
 
         /*Bouton de validation*/
         submitAddMember = new JButton("Ajouter");
-        submitAddMember.setBackground(new Color(50, 50, 100));
+        submitAddMember.setBackground(new Color(59, 89, 152));
         submitAddMember.setForeground(Color.WHITE);
 
         /*Ajout des differents panneaux dans le panneau formAdd */
@@ -369,10 +435,11 @@ public class MainWindow extends JFrame implements ActionListener {
         formSearch.add(numToSearch = new JFormattedTextField(NumberFormat.getIntegerInstance()));
         numToSearch.setPreferredSize(new Dimension(150, 30));
         submitSearch = new JButton("Rechercher");
-        submitSearch.setBackground(new Color(50, 50, 100));
+        submitSearch.setBackground(new Color(59, 89, 152));
         submitSearch.setForeground(Color.WHITE);
         formSearch.add(submitSearch);
-        formSearch.setBorder(WindowUtils.myBorder("Recherche", new Color(50, 50, 100), 5));
+        formSearch.setBorder(WindowUtils.myBorder("Recherche",
+                new Color(59, 89, 152), 2));
         formSearch.setBackground(Color.WHITE);
 
         return formSearch;
@@ -391,9 +458,9 @@ public class MainWindow extends JFrame implements ActionListener {
         panelContent.remove(cover);
         try {
             BufferedImage myPicture =
-                    ImageIO.read(getClass().getResource("./img3.jpg"));
+                    ImageIO.read(getClass().getResource("./img.jpg"));
             Image myPictureScaled = myPicture.getScaledInstance(header.getWidth(),
-                    header.getHeight() + 200, Image.SCALE_SMOOTH);
+                    header.getHeight() + 100, Image.SCALE_SMOOTH);
             cover = new JLabel(new ImageIcon(myPictureScaled));
         } catch (IOException io) {
             io.printStackTrace();
@@ -464,6 +531,14 @@ public class MainWindow extends JFrame implements ActionListener {
             mainPanel.repaint();
             this.authentification();
         }
+        if (e.getSource() == addFormation) {
+            nbFormation++;
+            formation.add(this.formFormation());
+            formation.remove(addFormation);
+            formation.repaint();
+            formation.add(addFormation);
+        }
         this.pack();
     }
+
 }
