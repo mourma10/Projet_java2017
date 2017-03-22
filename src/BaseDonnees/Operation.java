@@ -5,7 +5,7 @@ import java.sql.*;
 /**
  * Created by moussa on 21/03/2017.
  */
-public class Operation {
+public class Operation implements VAriableBaseDonnees{
     static Connection conn;
     static Statement st;
     static ResultSet rs ;
@@ -20,8 +20,7 @@ public class Operation {
             e.printStackTrace();
         }
         try {
-        	String myUrl = "jdbc:mysql://localhost/GestAnciens";
-			conn = DriverManager.getConnection(myUrl, "phpmyadmin", "some_pass");
+			conn = DriverManager.getConnection(myUrl, user, password);
         }
         catch (Exception e)
         {
