@@ -77,5 +77,40 @@ public class Operation {
 
     }
 */
+public static void ajouterMembre(Membre pers) throws SQLException{
+    String requete="insert into user values(\""
+            +pers.getLogin()+"\","
+            +pers.getmdpasse()+"\","
+            +pers.getPrenom()+"\","
+            +pers.getNom()+"\","
+            +pers.getDateNaiss()+"\","
+            +pers.getEmail()+"\","
+            +pers.getAdresse()+"\","
+            +pers.getTel()+"\","
+            +pers.getTelBureau()+"\","
+            +pers.getFaxe()+")";
+    int a =st.executeUpdate(requete);
+    if(a == 1)
+    {
+        System.out.println("Update reussie");
+    }
+    else
+    {
+        System.out.println("Insertion echouee");
+    }
+}
+    public static void deleteData(Membre pers) throws Exception
+    {
+        String requete = "delete from user where login = \""+pers.getLogin()+"\"";
+        int a = st.executeUpdate(requete);
 
+        if(a == 1)
+        {
+            System.out.println("suppression reussie");
+        }
+        else
+        {
+            System.out.println("suppression echouee");
+        }
+    }
 }
