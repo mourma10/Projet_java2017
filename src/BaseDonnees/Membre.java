@@ -1,6 +1,7 @@
 package BaseDonnees;
 
-import java.util.Date;
+import java.sql.Date;
+import java.text.*;
 
 public class Membre {
 
@@ -16,15 +17,17 @@ public class Membre {
 	private String faxe ;
 	private Formation [] formation ;
 
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
 
 	public Membre (String login , String mdpasse , String prenom ,
-		String nom , Date dateNaiss , String email, String adresse , String tel ,
-		 String telBureau , String faxe , Formation... formation ) {
+		String nom , String dateNaiss , String email, String adresse , String tel ,
+		 String telBureau , String faxe , Formation... formation ) throws Exception {
 
 		this.login=login ;
 		this.mdpasse=mdpasse ;
+		this.nom=nom ;
 		this.prenom=prenom ;
-		this.dateNaiss=dateNaiss ;
+		this.dateNaiss= new Date (formatter.parse(dateNaiss).getTime());
 		this.email=email ;
 		this.adresse = adresse ;
 		this.tel=tel;
@@ -56,7 +59,7 @@ public class Membre {
 		return this.prenom ;
 	}
 
-	public Date getDateNaiss(){
+	public java.sql.Date getDateNaiss(){
 		return this.dateNaiss ;
 	}
 
@@ -83,6 +86,7 @@ public class Membre {
 	public Formation [] getFormation(){
 		return this.formation ;
 	}
+
 
 
 

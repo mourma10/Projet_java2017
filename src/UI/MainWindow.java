@@ -7,8 +7,10 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.text.NumberFormat;
-
-import BaseDonnees.*;
+import BaseDonnees.* ;
+import java.util.* ;
+import java.text.*;
+import java.sql.Date ;
 
 /**
  * @author mamour on 17/03/17.
@@ -69,11 +71,11 @@ public class MainWindow extends JFrame implements ActionListener {
             adress /* Adresse du membre */,
             email /* Email du membre */,
             loginMember /*Login du membre choisi lors de l'ajout*/,
-            passwdMember /*Mot de passe du membre choisi lors de l'ajout*/;
+            passwdMember /*Mot de passe du membre choisi lors de l'ajout*/,
+            dateBirth /* Date de naisance du membre */;
 
     private JFormattedTextField
             numPhone /* Numero telephone du membre */,
-            dateBirth /* Date de naisance du membre */,
             faxe /* Faxe du memebre */,
             telOffice /* Telephone bureau du membre*/,
             numToSearch /* Numero du membre a chercher*/;
@@ -379,7 +381,7 @@ public class MainWindow extends JFrame implements ActionListener {
         privacy.add(lastName = new JTextField(15));
         lastName.setPreferredSize(new Dimension(15, 30));
         privacy.add(new JLabel("Date de Naissance"));
-        privacy.add(dateBirth = new JFormattedTextField(NumberFormat.getIntegerInstance()));
+        privacy.add(dateBirth = new JTextField(15));
         dateBirth.setPreferredSize(new Dimension(150, 30));
         privacy.setBorder(WindowUtils.myBorder("Informations Personnelles",
                 new Color(59, 89, 152), 2));
@@ -415,6 +417,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
         /*Bouton de validation*/
         submitAddMember = new JButton("Ajouter");
+        submitAddMember.addActionListener(this);
         submitAddMember.setBackground(new Color(59, 89, 152));
         submitAddMember.setForeground(Color.WHITE);
 
@@ -566,6 +569,42 @@ public class MainWindow extends JFrame implements ActionListener {
             panelSearch.add(panelResultat);
             panelSearch.repaint();
         }
+        if (e.getSource() == submitAddMember) {
+            try {
+            		if(loginMember.getText().equals("") || firstName.getText().equals("") || lastName.getText().equals("")
+            			|| passwdMember.getText().equals("")||
+            			departements.getSelectedIndex()==0||niveau.getSelectedIndex()==0||options.getSelectedIndex()==0)
+
+            				JOptionPane.showMessageDialog(panelLogin,"Veuillez remplir tous les champs relatifs obligatoires");
+
+            		else {
+							if (dateBirth.getText().equals(""))
+			            		dateBirth.setText("0000-00-00");
+
+			                if (Operation.existe(loginMember.getText())==false){
+
+			                    Formation [] formation=new Formation[nbFormation+1];
+
+			                    for(int i=0 ;i<nbFormation+1;i++){
+			                        formation[i]=new Formation(departements.getSelectedItem().toString(),niveau.getSelectedItem().toString(),
+			                        options.getSelectedItem().toString(),annee.getSelectedItem().toString()) ;
+			                        Operation.ajouterMembre(new Membre(loginMember.getText(),passwdMember.getText(),firstName.getText(),lastName.getText(),
+			                        dateBirth.getText(),email.getText(),adress.getText(),numPhone.getText(),telOffice.getText(),faxe.getText(),formation));
+			                    }
+			                 JOptionPane.showMessageDialog(panelLogin,"Ajout effectué avec succès");
+
+	                }
+	                else 
+	                JOptionPane.showMessageDialog(panelLogin,"Login deja pris");
+            		}
+	            	
+                }
+            catch (Exception ex){
+
+                System.err.println("Got an exception! ");
+                ex.printStackTrace();
+             }
+            }
         this.pack();
     }
 
