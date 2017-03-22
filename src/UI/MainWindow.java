@@ -7,7 +7,8 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.text.NumberFormat;
-import BaseDonnees.* ;
+
+import BaseDonnees.*;
 
 /**
  * @author mamour on 17/03/17.
@@ -30,6 +31,8 @@ public class MainWindow extends JFrame implements ActionListener {
     private JPanel formSearch/*Panneau qui va contenir le formulaire de recherche*/;
     private JPanel mainFormation;
     private JPanel formation;
+    private JPanel panelSearch;
+    private JPanel panelResultat;
 
     /**
      * Boutons de notre application
@@ -109,6 +112,8 @@ public class MainWindow extends JFrame implements ActionListener {
         this.formAdd = this.formAdd();
         this.formSearch = this.formSearch();
         this.accueilContent = this.accueilContent();
+        panelSearch = new JPanel();
+        panelSearch.setLayout(new BoxLayout(panelSearch, BoxLayout.PAGE_AXIS));
     }
 
     /**
@@ -429,6 +434,7 @@ public class MainWindow extends JFrame implements ActionListener {
      * @return JPanel
      */
     private JPanel formSearch() {
+
         /*Mise en place du panel*/
         JPanel formSearch = new JPanel();
         formSearch.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -440,11 +446,11 @@ public class MainWindow extends JFrame implements ActionListener {
         submitSearch = new JButton("Rechercher");
         submitSearch.setBackground(new Color(59, 89, 152));
         submitSearch.setForeground(Color.WHITE);
+        submitSearch.addActionListener(this);
         formSearch.add(submitSearch);
         formSearch.setBorder(WindowUtils.myBorder("Recherche",
                 new Color(59, 89, 152), 2));
         formSearch.setBackground(Color.WHITE);
-
         return formSearch;
     }
 
@@ -497,33 +503,30 @@ public class MainWindow extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == connexion) {
             try {
-                if (Operation.connection(login.getText(),passwd.getText())==true){
-                this.cleanEcranAuth();
-                this.actionConnexion();
+                if (Operation.connection(login.getText(), passwd.getText()) == true) {
+                    this.cleanEcranAuth();
+                    this.actionConnexion();
+                } else {
+                    JOptionPane.showMessageDialog(panelLogin, "Login ou mot de passe incorrect");
+                }
+            } catch (Exception ex) {
+                System.err.println("Got an exception! ");
+                ex.printStackTrace();
             }
-            else {
-                JOptionPane.showMessageDialog(panelLogin,"Login ou mot de passe incorrect");
-            }
-        }
-            catch (Exception ex)
-            {
-            System.err.println("Got an exception! ");
-            ex.printStackTrace();
-             }
         }
         if (e.getSource() == accueil) {
             if (formAdd.isVisible())
                 formAdd.setVisible(false);
-            if (formSearch.isVisible())
-                formSearch.setVisible(false);
+            if (panelSearch.isVisible())
+                panelSearch.setVisible(false);
             if (!accueilContent.isVisible() || accueilContent.getParent() == null)
                 this.actionConnexion();
         }
         if (e.getSource() == addMember) {
             if (accueilContent.isVisible())
                 accueilContent.setVisible(false);
-            if (formSearch.isVisible())
-                formSearch.setVisible(false);
+            if (panelSearch.isVisible())
+                panelSearch.setVisible(false);
             if (!formAdd.isVisible() || formAdd.getParent() == null)
                 this.actionAddMember();
         }
@@ -532,9 +535,10 @@ public class MainWindow extends JFrame implements ActionListener {
                 accueilContent.setVisible(false);
             if (formAdd.isVisible())
                 formAdd.setVisible(false);
-            if (!formSearch.isVisible() || formSearch.getParent() == null) {
-                formSearch = this.formSearch();
-                panelContent.add(this.formSearch, BorderLayout.CENTER);
+            if (!panelSearch.isVisible() || panelSearch.getParent() == null) {
+                panelSearch.add(formSearch);
+                panelSearch.setVisible(true);
+                panelContent.add(panelSearch, BorderLayout.CENTER);
             }
         }
         if (e.getSource() == deconnexion) {
@@ -552,6 +556,15 @@ public class MainWindow extends JFrame implements ActionListener {
             formation.remove(addFormation);
             formation.repaint();
             formation.add(addFormation);
+        }
+        if (e.getSource() == submitSearch) {
+            panelResultat = new JPanel();
+            panelResultat.setLayout(new BoxLayout(panelResultat, BoxLayout.PAGE_AXIS));
+            panelResultat.add(new JLabel("Test Test Test"));
+            panelResultat.setBorder(WindowUtils.myBorder("Resultat",
+                    new Color(59, 89, 152), 2));
+            panelSearch.add(panelResultat);
+            panelSearch.repaint();
         }
         this.pack();
     }
