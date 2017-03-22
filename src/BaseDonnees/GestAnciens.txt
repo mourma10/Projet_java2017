@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Mar 21 Mars 2017 à 13:58
+-- Généré le :  Mer 22 Mars 2017 à 21:31
 -- Version du serveur :  5.5.42
 -- Version de PHP :  5.6.10
 
@@ -17,15 +17,81 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `Admins`
+--
+
+CREATE TABLE `Admins` (
+  `login` varchar(50) NOT NULL,
+  `mdpasse` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `Formation`
 --
 
 CREATE TABLE `Formation` (
   `idFormations` int(11) NOT NULL,
-  `Departement` varchar(45) DEFAULT NULL,
-  `niveau` varchar(45) DEFAULT NULL,
-  `Option` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `Departement` varchar(45) NOT NULL,
+  `niveau` varchar(45) NOT NULL,
+  `Option` varchar(45) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `Formation`
+--
+
+INSERT INTO `Formation` (`idFormations`, `Departement`, `niveau`, `Option`) VALUES
+(1, 'Genie Informatique', 'Informatique', 'DUT'),
+(2, 'Genie Informatique', 'Informatique', 'DIC'),
+(3, 'Genie Informatique', 'Informatique', 'Licence'),
+(4, 'Genie Informatique', 'Informatique', 'Master'),
+(5, 'Genie Informatique', 'Telecom', 'Master'),
+(6, 'Genie Informatique', 'Telecom ', 'Licence'),
+(7, 'Genie Informatique', 'Telecom ', 'DIC'),
+(8, 'Genie Informatique', 'Telecom ', 'DUT'),
+(9, 'Genie Mecanique', 'Mecanique ', 'DUT'),
+(10, 'Genie Mecanique', 'Mecanique ', 'DIC'),
+(11, 'Genie Mecanique', 'Mecanique ', 'Licence'),
+(12, 'Genie Mecanique', 'Mecanique ', 'Master'),
+(13, 'Genie Civil', 'Civil', 'Master'),
+(14, 'Genie Civil', 'Civil', 'Licence'),
+(15, 'Genie Civil', 'Civil', 'DIC'),
+(16, 'Genie Civil', 'Civil', 'DUT'),
+(17, 'Genie Electrique', 'Electrique', 'DUT'),
+(18, 'Genie Electrique', 'Electrique', 'DIC'),
+(19, 'Genie Electrique', 'Electrique', 'Licence'),
+(20, 'Genie Electrique', 'Electrique', 'Master'),
+(21, 'Genie Chimique et BA', 'Industrie Alimentaite', 'Master'),
+(22, 'Genie Chimique et BA', 'Industrie Alimentaite', 'Licence'),
+(23, 'Genie Chimique et BA', 'Industrie Alimentaite', 'DIC'),
+(24, 'Genie Chimique et BA', 'Industrie Alimentaite', 'DUT'),
+(25, 'Genie Chimique et BA', 'Analyse Biologique', 'DUT'),
+(26, 'Genie Chimique et BA', 'Analyse Biologique', 'DIC'),
+(27, 'Genie Chimique et BA', 'Analyse Biologique', 'Licence'),
+(28, 'Genie Chimique et BA', 'Analyse Biologique', 'Master'),
+(29, 'Genie Chimique et BA', 'Chimie', 'Master'),
+(30, 'Genie Chimique et BA', 'Chimie', 'Licence'),
+(31, 'Genie Chimique et BA', 'Chimie', 'DUT'),
+(32, 'Genie Chimique et BA', 'Chimie', 'DIC'),
+(33, 'Genie Chimique et BA', 'Chimie', 'DST'),
+(34, 'Genie Chimique et BA', 'Chimie', 'DIT'),
+(35, 'Genie Chimique et BA', 'Analyse Biologique', 'DIT'),
+(36, 'Genie Chimique et BA', 'Analyse Biologique', 'DST'),
+(37, 'Genie Chimique et BA', 'Industrie Alimentaite', 'DIT'),
+(38, 'Genie Chimique et BA', 'Industrie Alimentaite', 'DST'),
+(39, 'Genie Informatique', 'Telecom', 'DST'),
+(40, 'Genie Informatique', 'Informatique', 'DST'),
+(41, 'Genie Civil', 'Civil', 'DST'),
+(42, 'Gestion', 'Gestion', 'DST'),
+(43, 'Gestion', 'Gestion', 'DUT'),
+(44, 'Gestion', 'Gestion', 'DEC'),
+(45, 'Gestion', 'Gestion', 'DSC'),
+(46, 'Gestion', 'Gestion', 'DSECG'),
+(47, 'Gestion', 'Gestion', 'DESCAF'),
+(48, 'Gestion', 'Gestion', 'Licence'),
+(49, 'Gestion', 'Gestion', 'Master');
 
 -- --------------------------------------------------------
 
@@ -34,26 +100,14 @@ CREATE TABLE `Formation` (
 --
 
 CREATE TABLE `membres` (
-  `login` varchar(50) NOT NULL,
-  `mdpasse` varchar(50) NOT NULL,
-  `Prenom` varchar(100) DEFAULT NULL,
-  `Nom` varchar(100) DEFAULT NULL,
-  `DateNaiss` date DEFAULT NULL,
+  `Tel` int(11) NOT NULL,
+  `Prenom` varchar(100) NOT NULL,
+  `Nom` varchar(100) NOT NULL,
+  `DateNaiss` date NOT NULL,
   `Email` varchar(100) DEFAULT NULL,
-  `Adresse` varchar(200) DEFAULT NULL,
-  `Tel` varchar(100) NOT NULL,
-  `TelBureau` varchar(100) NOT NULL,
-  `Faxe` varchar(100) NOT NULL
+  `TelBureau` int(11) DEFAULT NULL,
+  `Faxe` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Contenu de la table `membres`
---
-
-INSERT INTO `membres` (`login`, `mdpasse`, `Prenom`, `Nom`, `DateNaiss`, `Email`, `Adresse`, `Tel`, `TelBureau`, `Faxe`) VALUES
-  ('aliou', 'passer', 'Aliou', 'Diallo', '2017-04-20', 'dialloallio@esp.sn', 'yoff', '778011598', '', ''),
-  ('mamour', 'repasser', 'Mamour', 'Tall', '2016-09-12', 'Coolertall@gmail.com', 'rufisque', 'perdu', '', ''),
-  ('moussa', 'repasser', 'Moussa', 'Ndiaye', '2017-02-18', 'ndiayemoussa@esp.sn', 'bargny', '774009184', '', '');
 
 -- --------------------------------------------------------
 
@@ -62,14 +116,20 @@ INSERT INTO `membres` (`login`, `mdpasse`, `Prenom`, `Nom`, `DateNaiss`, `Email`
 --
 
 CREATE TABLE `membre_formation` (
-  `membres_login` varchar(50) NOT NULL,
+  `membres_Tel` int(11) NOT NULL,
   `Formation_idFormations` int(11) NOT NULL,
-  `Annee` varchar(45) DEFAULT NULL
+  `Annee` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Index pour les tables exportées
 --
+
+--
+-- Index pour la table `Admins`
+--
+ALTER TABLE `Admins`
+  ADD PRIMARY KEY (`login`);
 
 --
 -- Index pour la table `Formation`
@@ -81,15 +141,25 @@ ALTER TABLE `Formation`
 -- Index pour la table `membres`
 --
 ALTER TABLE `membres`
-  ADD PRIMARY KEY (`login`);
+  ADD PRIMARY KEY (`Tel`);
 
 --
 -- Index pour la table `membre_formation`
 --
 ALTER TABLE `membre_formation`
-  ADD PRIMARY KEY (`membres_login`,`Formation_idFormations`),
+  ADD PRIMARY KEY (`membres_Tel`,`Formation_idFormations`),
+  ADD KEY `fk_membre_formation_membres1_idx` (`membres_Tel`),
   ADD KEY `fk_membre_formation_Formation1_idx` (`Formation_idFormations`);
 
+--
+-- AUTO_INCREMENT pour les tables exportées
+--
+
+--
+-- AUTO_INCREMENT pour la table `Formation`
+--
+ALTER TABLE `Formation`
+  MODIFY `idFormations` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=50;
 --
 -- Contraintes pour les tables exportées
 --
@@ -98,5 +168,5 @@ ALTER TABLE `membre_formation`
 -- Contraintes pour la table `membre_formation`
 --
 ALTER TABLE `membre_formation`
-  ADD CONSTRAINT `fk_membre_formation_membres` FOREIGN KEY (`membres_login`) REFERENCES `membres` (`login`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_membre_formation_Formation1` FOREIGN KEY (`Formation_idFormations`) REFERENCES `Formation` (`idFormations`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_membre_formation_Formation1` FOREIGN KEY (`Formation_idFormations`) REFERENCES `Formation` (`idFormations`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_membre_formation_membres1` FOREIGN KEY (`membres_Tel`) REFERENCES `membres` (`Tel`) ON DELETE CASCADE ON UPDATE CASCADE;
