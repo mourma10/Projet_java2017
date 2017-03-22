@@ -11,25 +11,9 @@ public class Operation implements VAriableBaseDonnees{
     static ResultSet rs ;
     static {
     	try {
-    		   Class.forName("com.mysql.jdbc.Driver");
-
-    	}
-    	 catch (Exception e)
-        {
-            System.err.println("Got an exception! ");
-            e.printStackTrace();
-        }
-        try {
-			conn = DriverManager.getConnection(myUrl, user, password);
-        }
-        catch (Exception e)
-        {
-            System.err.println("Got an exception! ");
-            e.printStackTrace();
-        }
-
-        try {
-			st=conn.createStatement();
+    	    Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(myUrl, user, password);
+            st=conn.createStatement();
         }
          catch (Exception e)
         {
