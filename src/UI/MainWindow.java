@@ -51,6 +51,8 @@ public class MainWindow extends JFrame implements ActionListener {
                             le formulaire de recherche*/,
             submitAddMember /* Bouton de validation pour l'ajout*/,
             submitSearch /* Bouton de validation pour la recherche*/,
+            submitModify /* Bouton pour modifier un membre*/,
+            submitDelete/* Bouton pour supprimer un membre*/,
             addFormation /* Permet d'ajouter une ou plusieurs autres formations*/;
 
     /**
@@ -72,13 +74,13 @@ public class MainWindow extends JFrame implements ActionListener {
             email /* Email du membre */,
             loginMember /*Login du membre choisi lors de l'ajout*/,
             passwdMember /*Mot de passe du membre choisi lors de l'ajout*/,
+             numToSearch /* Numero du membre a chercher*/,
             dateBirth /* Date de naisance du membre */;
 
     private JFormattedTextField
             numPhone /* Numero telephone du membre */,
             faxe /* Faxe du memebre */,
-            telOffice /* Telephone bureau du membre*/,
-            numToSearch /* Numero du membre a chercher*/;
+            telOffice /* Telephone bureau du membre*/;
     /**
      * Zone de choix
      */
@@ -444,7 +446,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
         /*Ajout des champs*/
         formSearch.add(new JLabel("Numero"));
-        formSearch.add(numToSearch = new JFormattedTextField(NumberFormat.getIntegerInstance()));
+        formSearch.add(numToSearch = new JTextField(15));
         numToSearch.setPreferredSize(new Dimension(150, 30));
         submitSearch = new JButton("Rechercher");
         submitSearch.setBackground(new Color(59, 89, 152));
@@ -561,13 +563,50 @@ public class MainWindow extends JFrame implements ActionListener {
             formation.add(addFormation);
         }
         if (e.getSource() == submitSearch) {
-            panelResultat = new JPanel();
-            panelResultat.setLayout(new BoxLayout(panelResultat, BoxLayout.PAGE_AXIS));
-            panelResultat.add(new JLabel("Test Test Test"));
-            panelResultat.setBorder(WindowUtils.myBorder("Resultat",
-                    new Color(59, 89, 152), 2));
-            panelSearch.add(panelResultat);
-            panelSearch.repaint();
+
+            try{
+                    if (!(numToSearch.getText().equals("")) && Operation.existe(numToSearch.getText())==true){
+                       
+                        panelResultat = new JPanel();
+                        panelResultat.setLayout(new BoxLayout(panelResultat, BoxLayout.PAGE_AXIS));
+                        Membre membre= Operation.chercherMembre(numToSearch.getText());
+                        panelResultat.add(new JLabel("Nom : "+membre.getNom()));
+                        panelResultat.add(new JLabel("Prenom : "+membre.getPrenom()));
+                        panelResultat.add(new JLabel("Date de Naissance : "+membre.getDateNaiss()));
+                        panelResultat.add(new JLabel("Telephone :"+membre.getTel()));
+                        panelResultat.add(new JLabel("Email : "+membre.getEmail()));
+                        panelResultat.add(new JLabel("Adresse : "+membre.getAdresse()));
+                        panelResultat.add(new JLabel("Fixe : "+membre.getTelBureau()));
+                        panelResultat.add(new JLabel("Faxe : "+membre.getFaxe()));
+                        panelResultat.add(new JLabel("Formations : "));
+                        int i =(membre.getFormation().length)-1 ;
+                        while(i>=0){
+                                panelResultat.add(new JLabel(membre.getFormation()[i].getDepartement()+" "+membre.getFormation()[i].getOption()+" "
+                                    +membre.getFormation()[i].getNiveau()+" "+membre.getFormation()[i].getAnnee()));
+                                i--;
+                        }
+                        
+
+
+                        panelResultat.setBorder(WindowUtils.myBorder("Resultat",
+                                new Color(59, 89, 152), 2));
+                        panelSearch.add(panelResultat);
+                        panelSearch.repaint();
+                }
+                else
+                    JOptionPane.showMessageDialog(panelLogin,"Cet utilisateur n'existe pas");
+
+
+
+            }
+                catch (Exception ex){
+
+                    System.err.println("Got an exception! ");
+                    ex.printStackTrace();
+             }
+         
+
+            
         }
         if (e.getSource() == submitAddMember) {
             try {
