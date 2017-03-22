@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Mer 22 Mars 2017 à 21:31
+-- Généré le :  Mer 22 Mars 2017 à 21:39
 -- Version du serveur :  5.5.42
 -- Version de PHP :  5.6.10
 
@@ -24,6 +24,14 @@ CREATE TABLE `Admins` (
   `login` varchar(50) NOT NULL,
   `mdpasse` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `Admins`
+--
+
+INSERT INTO `Admins` (`login`, `mdpasse`) VALUES
+('admin', 'admin'),
+('root', 'root');
 
 -- --------------------------------------------------------
 
