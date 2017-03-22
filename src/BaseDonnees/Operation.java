@@ -92,6 +92,32 @@ public static void ajouterMembre(Membre pers) throws Exception,SQLException{
     
 
 }
+
+ public static Membre chercherMembre(String idMembre) throws Exception
+    {
+        int nbFormations=0,i=0;
+        Formation [] formation ;
+
+        String requete = "select count(*) from membre_formation where membres_login = \""+idMembre+"\"";
+        rs = st.executeQuery(requete);
+        while(rs.next())
+            nbFormations++;
+        formation=new Formation[nbFormations+1];
+
+
+        requete = "select Departement,niveau,`option`,annee from membre_formation,Formation where membres_login = \""+idMembre+"\" and idFormations=Formation_idFormations";
+        rs = st.executeQuery(requete);
+        while(rs.next()){
+            formation[i]=new Formation(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4));
+            i++;
+        }
+        
+        requete = "select * from membres where login = \""+idMembre+"\"";
+        rs = st.executeQuery(requete);
+        rs.next();
+        return (new Membre(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),
+            rs.getString(6),rs.getString(7),rs.getString(8),rs.getString(9),rs.getString(10),formation));
+    }
     public static void deleteData(Membre pers) throws Exception
     {
         String requete = "delete from user where login = \""+pers.getLogin()+"\"";
