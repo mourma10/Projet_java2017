@@ -297,6 +297,8 @@ public class MainWindow extends JFrame implements ActionListener {
 
                     case "Genie Mecanique":
                         options.addItem("Mecanique");
+                        options.removeItem("Informatique");
+                        options.removeItem("Telecoms et Reseaux");
                 }
             }
         });
