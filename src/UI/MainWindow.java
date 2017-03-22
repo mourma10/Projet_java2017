@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.text.NumberFormat;
+import BaseDonnees.* ;
 
 /**
  * @author mamour on 17/03/17.
@@ -493,8 +494,20 @@ public class MainWindow extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == connexion) {
-            this.cleanEcranAuth();
-            this.actionConnexion();
+            try {
+                if (Operation.connection(login.getText(),passwd.getText())==true){
+                this.cleanEcranAuth();
+                this.actionConnexion();
+            }
+            else {
+                JOptionPane.showMessageDialog(panelLogin,"Login ou mot de passe incorrect");
+            }
+        }
+            catch (Exception ex)
+            {
+            System.err.println("Got an exception! ");
+            ex.printStackTrace();
+             }
         }
         if (e.getSource() == accueil) {
             if (formAdd.isVisible())
