@@ -5,51 +5,37 @@ import java.text.*;
 
 public class Membre {
 
-	private String login ;
-	private String mdpasse ;
+	private String tel ;
 	private String prenom ;
 	private String nom ;
 	private Date dateNaiss ;
 	private String email ;
 	private String adresse ;
-	private String tel ;
 	private String telBureau ;
 	private String faxe ;
 	private Formation [] formation ;
 
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
 
-	public Membre (String login , String mdpasse , String prenom ,
-		String nom , String dateNaiss , String email, String adresse , String tel ,
-		 String telBureau , String faxe , Formation... formation ) throws Exception {
+	public Membre (String tel , String prenom ,
+		String nom , String dateNaiss , String email, String adresse ,
+		 String telBureau , String faxe , Formation[] formation ) throws Exception {
 
-		this.login=login ;
-		this.mdpasse=mdpasse ;
+		this.tel=tel ;
 		this.nom=nom ;
 		this.prenom=prenom ;
 		this.dateNaiss= new Date (formatter.parse(dateNaiss).getTime());
 		this.email=email ;
 		this.adresse = adresse ;
-		this.tel=tel;
 		this.telBureau=telBureau ;
 		this.faxe=faxe ;
-		this.formation = new Formation [formation.length] ;
-
-		/*boucle pour remplir les différentes formations d'un membre */
-		for (int i =0 ; i<formation.length ; i++)
-			this.formation[i]=formation[i];
+		this.formation=formation;
 
 	}
 
    // les getters
 
-	public String getLogin(){
-		return this.login ;
-	}
-
-	public String getmdpasse(){
-		return this.mdpasse ;
-	}
+	public String getTel() { return this.tel ; }
 
 	public String getNom(){
 		return this.nom ;
@@ -71,10 +57,6 @@ public class Membre {
 		return this.adresse ;
 	}
 
-	public String getTel(){
-		return this.tel;
-	}
-
 	public String getTelBureau(){
 		return this.telBureau ;
 	}
@@ -91,14 +73,6 @@ public class Membre {
 
 
 // les setteurs
-
-	public void setLogin(String login){
-		this.login=login ;
-	}
-
-	public void setmdpasse(String mdpasse){
-		this.mdpasse=mdpasse ;
-	}
 
 	public void setNom(String nom){
 		this.nom=nom ;
@@ -132,11 +106,9 @@ public class Membre {
 		this.faxe=faxe ;
 	}
 
-	public void setFormation(Formation... formation){
+	public void setFormation(Formation[] formation){
 		/*boucle pour remplir les différentes formations d'un membre */
 		for (int i =0 ; i<formation.length ; i++)
 			this.formation[i]=formation[i];
-
-
 }
 }

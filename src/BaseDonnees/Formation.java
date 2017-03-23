@@ -8,7 +8,7 @@ public class Formation {
 	private String departement ;
 	private String niveau ;
 	private String option ;
-	private java.sql.Date annee ;
+	private String annee ;
 
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
 
@@ -20,7 +20,7 @@ public class Formation {
 		this.departement=departement;
 		this.niveau=niveau;
 		this.option=option ;
-		this.annee=new Date (formatter.parse(annee).getTime());
+		this.annee=annee;
 	}
 
 	public String getDepartement(){
@@ -35,7 +35,7 @@ public class Formation {
 		return this.option ;
 	} 
 
-	public Date getAnnee(){
+	public String getAnnee(){
 		return this.annee ;
 	} 
 
