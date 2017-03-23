@@ -108,7 +108,9 @@ public class MainWindow extends JFrame implements ActionListener {
         mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setSize(new Dimension((int)screenSize.getWidth(), (int)screenSize.getHeight()));
+        this.setSize(800, 600);
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
         this.getContentPane().add(mainPanel);
         //this.setExtendedState(MainWindow.MAXIMIZED_BOTH);
         header = WindowUtils.header();
@@ -155,7 +157,7 @@ public class MainWindow extends JFrame implements ActionListener {
         searchMember.setForeground(Color.WHITE);
         addMember.setForeground(Color.WHITE);
         deconnexion.setForeground(Color.WHITE);*/
-        accueil.setBackground(new Color(59,89,152));
+        accueil.setForeground(new Color(59,89,152));
         searchMember.setBackground(new Color(59,89,152));
         addMember.setBackground(new Color(59,89,152));
         deconnexion.setBackground(new Color(59,89,152));
@@ -224,17 +226,6 @@ public class MainWindow extends JFrame implements ActionListener {
         this.pack();
     }
 
-    private JPanel accueilActivity() {
-        JPanel activity = new JPanel();
-        JPanel contentActivity = new JPanel();
-        contentActivity.setBackground(Color.WHITE);
-        activity.setLayout(new BorderLayout());
-        contentActivity.setLayout(new BoxLayout(contentActivity, BoxLayout.PAGE_AXIS));
-      contentActivity.add(menu);
-        activity.add(contentActivity, BorderLayout.CENTER);
-        activity.setBorder(WindowUtils.myBorder("Menu", Color.BLACK, 1));
-        return activity;
-    }
 
     /**
      * Retourne le panel qui va contenir le
@@ -479,9 +470,8 @@ public class MainWindow extends JFrame implements ActionListener {
      */
     private void actionConnexion() {
         this.accueilContent = this.accueilContent();
-        this.activity = this.accueilActivity();
-        panelContent.add(this.accueilContent, BorderLayout.WEST);
-        panelContent.add(this.activity, BorderLayout.EAST);
+        panelContent.add(this.accueilContent, BorderLayout.CENTER);
+        panelContent.add(this.menu, BorderLayout.WEST);
     }
 
     /**
@@ -539,8 +529,6 @@ public class MainWindow extends JFrame implements ActionListener {
         if (e.getSource() == deconnexion) {
             panelContent.removeAll();
             panelContent.repaint();
-            header.remove(menu);
-            header.repaint();
             mainPanel.remove(cover);
             mainPanel.repaint();
             this.authentification();
@@ -573,7 +561,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
                         /*String[] labelForm = {"Departement","Option","Niveau","Annee"};
                         for (int i = 0;i<4;i++)
-                            panelResForm.add(new JLabel(labelForm[i]));*/
+                            panelResForm.add(new JLa bel(labelForm[i]));*/
 
                         panelResInfo.add(new JLabel(membre.getTel()));
                         panelResInfo.add(new JLabel(membre.getNom()));
