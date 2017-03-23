@@ -51,8 +51,6 @@ public class MainWindow extends JFrame implements ActionListener {
                             le formulaire de recherche*/,
             submitAddMember /* Bouton de validation pour l'ajout*/,
             submitSearch /* Bouton de validation pour la recherche*/,
-            submitModify /* Bouton pour modifier un membre*/,
-            submitDelete/* Bouton pour supprimer un membre*/,
             addFormation /* Permet d'ajouter une ou plusieurs autres formations*/;
 
     /**
@@ -93,8 +91,8 @@ public class MainWindow extends JFrame implements ActionListener {
     private String[]
             selectedDepartement,
             selectedOption,
-            selectedNiveau,
-            selectedAnnee;
+            selectedNiveau;
+    private String [] selectedAnnee = new String[3];
     private static int nbFormation = 0;
 
     private static final Font myFont = new Font("Helvetica Neue", Font.BOLD, 15);
@@ -125,7 +123,6 @@ public class MainWindow extends JFrame implements ActionListener {
         selectedDepartement = new String[3];
         selectedOption = new String[3];
         selectedNiveau = new String[3];
-        selectedAnnee = new String[3];
     }
 
     /**
@@ -312,6 +309,8 @@ public class MainWindow extends JFrame implements ActionListener {
             if (e.getStateChange() == ItemEvent.SELECTED)
                 selectedOption[nbFormation] = (String) e.getItem();
         });
+
+      selectedAnnee[nbFormation] = (String) annee.getSelectedItem();
 
         annee.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED)
@@ -577,7 +576,8 @@ public class MainWindow extends JFrame implements ActionListener {
                         panelResForm.setBorder(WindowUtils.myBorder("Formation",
                                 new Color(59, 89, 152), 2));
 
-                        int i = membre.getFormation().length - 1 ;
+                        int i = (membre.getFormation().length) - 1 ;
+                        System.out.println(membre.getFormation().length);
                         while(i>=0){
                                 panelResForm.add(new JLabel(membre.getFormation()[i].getDepartement()+" \t\t "+membre.getFormation()[i].getOption()+" \t\t "
                                     +membre.getFormation()[i].getNiveau()+" \t\t "+membre.getFormation()[i].getAnnee()));
@@ -596,6 +596,7 @@ public class MainWindow extends JFrame implements ActionListener {
                         panelModSup.setLayout(new BoxLayout(panelModSup, BoxLayout.PAGE_AXIS));
                         panelModSup.add(editMember);
                         panelModSup.add(rmMember);
+                        rmMember.addActionListener(this);
                         panelModSup.setBackground(Color.WHITE);
                         panel.add(panelModSup);
                         panelResultat.add(panelResInfo);
@@ -655,6 +656,24 @@ public class MainWindow extends JFrame implements ActionListener {
                 ex.printStackTrace();
              }
             }
+        if (e.getSource() == rmMember) {
+            try {
+
+                if(Operation.supprimerMembre(numToSearch.getText()))
+                {
+                    panelResultat.setVisible(false);
+                    JOptionPane.showMessageDialog(panelLogin,"Suppression effectué avec succes");
+                }
+
+                else
+                    JOptionPane.showMessageDialog(panelLogin,"Erreur de Suppression");
+            }
+            catch (Exception ex){
+
+                System.err.println("Got an exception! ");
+                ex.printStackTrace();
+            }
+        }
         this.pack();
     }
 

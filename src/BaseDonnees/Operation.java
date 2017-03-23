@@ -20,8 +20,7 @@ public class Operation implements VAriableBaseDonnees{
             e.printStackTrace();
         }
         try {
-            String myUrl = "jdbc:mysql://localhost:8889/GestAnciens";
-            conn = DriverManager.getConnection(myUrl, "root", "root");
+            conn = DriverManager.getConnection(myUrl,user,password);
         }
         catch (Exception e)
         {
@@ -97,8 +96,9 @@ public static void ajouterMembre(Membre pers) throws Exception{
 
         String requete = "select count(*) from membre_formation where membres_Tel = \""+idMembre+"\"";
         rs = st.executeQuery(requete);
-        while(rs.next())
-            nbFormations++;
+        rs.next();
+        nbFormations=rs.getInt(1);
+
         formation=new Formation[nbFormations];
 
 
@@ -115,18 +115,11 @@ public static void ajouterMembre(Membre pers) throws Exception{
         return (new Membre(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),
             rs.getString(6),rs.getString(7),rs.getString(8),formation));
     }
-    public static void deleteData(Membre pers) throws Exception
+    public static boolean supprimerMembre(String idMembre) throws Exception
     {
-        String requete = "delete from user where login = \""+pers.getTel()+"\"";
-        int a = st.executeUpdate(requete);
+        String requete = "delete from membres where tel = \""+idMembre+"\"";
+        return (st.executeUpdate(requete)==1) ;
 
-        if(a == 1)
-        {
-            System.out.println("suppression reussie");
-        }
-        else
-        {
-            System.out.println("suppression echouee");
-        }
     }
+
 }
