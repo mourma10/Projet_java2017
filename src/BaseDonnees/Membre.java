@@ -1,5 +1,4 @@
 package BaseDonnees;
-
 import java.sql.Date;
 import java.text.*;
 
@@ -15,7 +14,7 @@ public class Membre {
 	private String faxe ;
 	private Formation [] formation ;
 
-    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
+	private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
 
 	public Membre (String tel , String prenom ,
 		String nom , String dateNaiss , String email, String adresse ,
@@ -24,7 +23,7 @@ public class Membre {
 		this.tel=tel ;
 		this.nom=nom ;
 		this.prenom=prenom ;
-		this.dateNaiss= new Date (formatter.parse(dateNaiss).getTime());
+		this.dateNaiss= new Date (this.formatter.parse(dateNaiss).getTime());
 		this.email=email ;
 		this.adresse = adresse ;
 		this.telBureau=telBureau ;
@@ -82,8 +81,12 @@ public class Membre {
 		this.prenom=prenom ;
 	}
 
-	public void setDateNaiss(Date dateNaiss){
-		this.dateNaiss= dateNaiss ;
+	public void setDateNaiss(String dateNaiss){
+		try {
+			this.dateNaiss = new Date (this.formatter.parse(dateNaiss).getTime()) ;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void setEmail(String email){

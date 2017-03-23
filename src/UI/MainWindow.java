@@ -51,6 +51,8 @@ public class MainWindow extends JFrame implements ActionListener {
                             le formulaire de recherche*/,
             submitAddMember /* Bouton de validation pour l'ajout*/,
             submitSearch /* Bouton de validation pour la recherche*/,
+            submitModifyMember,/*Bouton validation de modif des infos */
+            submitModifyFormation,/*Bouton validation de modif des formations */
             addFormation /* Permet d'ajouter une ou plusieurs autres formations*/;
 
     /**
@@ -440,6 +442,95 @@ public class MainWindow extends JFrame implements ActionListener {
         return formSearch;
     }
 
+    private JPanel formModify() {
+        /*Mise en place des sections et du JPanel qui sera retourne*/
+        JPanel formAdd, privacy, contact, infoAuth;
+        formAdd = new JPanel();
+        infoAuth = new JPanel();
+        privacy = new JPanel();
+        contact = new JPanel();
+        formation = new JPanel();
+        mainFormation = new JPanel();
+        mainFormation.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        formAdd.setLayout(new BoxLayout(formAdd, BoxLayout.PAGE_AXIS));
+        infoAuth.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        privacy.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        contact.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        formation.setLayout(new BoxLayout(formation, BoxLayout.PAGE_AXIS));
+
+        /*Section login et mot de passe*/
+
+        /*Section informations personnelles*/
+        privacy.add(new JLabel("Telephone"));
+        privacy.add(numPhone = new JFormattedTextField(NumberFormat.getIntegerInstance()));
+        numPhone.setPreferredSize(new Dimension(150, 30));
+        privacy.add(new JLabel("Prenom"));
+        privacy.add(firstName = new JTextField(15));
+        firstName.setPreferredSize(new Dimension(15, 30));
+        privacy.add(new JLabel("Nom"));
+        privacy.add(lastName = new JTextField(15));
+        lastName.setPreferredSize(new Dimension(15, 30));
+        privacy.add(new JLabel("Date de Naissance"));
+        privacy.add(dateBirth = new JTextField(15));
+        dateBirth.setPreferredSize(new Dimension(150, 30));
+        privacy.setBorder(WindowUtils.myBorder("Informations Personnelles",
+                new Color(59, 89, 152), 2));
+        privacy.setBackground(Color.WHITE);
+
+
+
+        /*Section contact*/
+        contact.add(new JLabel("Adresse"));
+        contact.add(adress = new JTextField(15));
+        adress.setPreferredSize(new Dimension(15, 30));
+        contact.add(new JLabel("Email"));
+        contact.add(email = new JTextField(15));
+        email.setPreferredSize(new Dimension(15, 30));
+        contact.add(new JLabel("Faxe"));
+        contact.add(faxe = new JFormattedTextField(NumberFormat.getIntegerInstance()));
+        faxe.setPreferredSize(new Dimension(150, 30));
+        contact.add(new JLabel("Tel Bureau"));
+        contact.add(telOffice = new JFormattedTextField(NumberFormat.getIntegerInstance()));
+        telOffice.setPreferredSize(new Dimension(150, 30));
+        contact.setBorder(WindowUtils.myBorder("Contact",
+                new Color(59, 89, 152), 2));
+        contact.setBackground(Color.WHITE);
+
+        /*Bouton de validation*/
+        submitModifyMember = new JButton("Modifier");
+        submitModifyMember.addActionListener(this);
+        submitModifyMember.setBackground(new Color(59, 89, 152));
+        submitModifyMember.setForeground(Color.WHITE);
+        contact.add(submitModifyMember);
+
+        /*Section formations*/
+        addFormation = new JButton("+Ajouter une formation");
+        addFormation.addActionListener(this);
+        formation.setBackground(Color.WHITE);
+        formation.add(this.formFormation());
+        formation.setBorder(WindowUtils.myBorder("Formations Suivies",
+                new Color(59, 89, 152), 2));
+        addFormation.setBackground(new Color(216, 223, 234));
+        formation.add(addFormation);
+        /*Bouton de validation*/
+        submitModifyFormation = new JButton("Modifier");
+        submitModifyFormation.addActionListener(this);
+        submitModifyFormation.setBackground(new Color(59, 89, 152));
+        submitModifyFormation.setForeground(Color.WHITE);
+        submitModifyMember.addActionListener(this);
+        submitModifyFormation.addActionListener(this);
+        formation.add(submitModifyFormation);
+        /*Ajout des differents panneaux dans le panneau formAdd */
+        formAdd.add(infoAuth);
+        formAdd.add(privacy);
+        formAdd.add(contact);
+        formAdd.add(formation);
+        formAdd.add(submitAddMember);
+
+        return formAdd;
+    }
+
+
     /**
      * Efface l'ecran d'authentification
      * si l'authentification reussit
@@ -480,6 +571,12 @@ public class MainWindow extends JFrame implements ActionListener {
     private void actionAddMember() {
         panelContent.repaint();
         this.formAdd = this.formAdd();
+        panelContent.add(formAdd, BorderLayout.CENTER);
+    }
+
+    private void actionModifyMember() {
+        panelContent.repaint();
+        this.formAdd = this.formModify();
         panelContent.add(formAdd, BorderLayout.CENTER);
     }
 
@@ -597,6 +694,7 @@ public class MainWindow extends JFrame implements ActionListener {
                         panelModSup.add(editMember);
                         panelModSup.add(rmMember);
                         rmMember.addActionListener(this);
+                        editMember.addActionListener(this);
                         panelModSup.setBackground(Color.WHITE);
                         panel.add(panelModSup);
                         panelResultat.add(panelResInfo);
@@ -674,7 +772,87 @@ public class MainWindow extends JFrame implements ActionListener {
                 ex.printStackTrace();
             }
         }
-        this.pack();
+        if (e.getSource() == editMember) {
+            try {
+                if (accueilContent.isVisible())
+                    accueilContent.setVisible(false);
+                if (panelSearch.isVisible())
+                    panelSearch.setVisible(false);
+                if (!formModify().isVisible() || formAdd.getParent() == null)
+                    this.actionModifyMember();
+                Membre membre= Operation.chercherMembre(numToSearch.getText());
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
+                firstName.setText(membre.getNom());
+                lastName.setText(membre.getPrenom());
+                dateBirth.setText(formatter.format(membre.getDateNaiss()));
+                email.setText(membre.getEmail());
+                adress.setText(membre.getAdresse());
+                numPhone.setText(membre.getTel());
+                telOffice.setText(membre.getTelBureau());
+                faxe.setText(membre.getFaxe());
+                departements.setSelectedItem(membre.getFormation()[0].getDepartement());
+                niveau.setSelectedItem(membre.getFormation()[0].getNiveau());
+                options.setSelectedItem(membre.getFormation()[0].getOption());
+                annee.setSelectedItem(membre.getFormation()[0].getAnnee());
+                for(int i=1 ; i<membre.getFormation().length; i++){
+                    formation.add(this.formFormation());
+                    formation.remove(addFormation);
+                    formation.repaint();
+                    formation.add(addFormation);
+                    departements.setSelectedItem(membre.getFormation()[i].getDepartement());
+                    niveau.setSelectedItem(membre.getFormation()[i].getNiveau());
+                    options.setSelectedItem(membre.getFormation()[i].getOption());
+                    annee.setSelectedItem(membre.getFormation()[i].getAnnee());
+                }
+                formAdd.remove(submitAddMember);
+                formation.repaint();
+            }
+            catch (Exception ex){
+
+                System.err.println("Got an exception! ");
+                ex.printStackTrace();
+            }
+        }
+
+        if (e.getSource() == submitModifyMember){
+            try {
+                Membre membre = Operation.chercherMembre(numPhone.getText());
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
+                membre.setNom(firstName.getText());
+                membre.setPrenom(lastName.getText());
+                membre.setDateNaiss((dateBirth.getText()));
+                membre.setEmail(email.getText());
+                membre.setAdresse(adress.getText());
+                membre.setTel(numPhone.getText());
+                membre.setTelBureau(telOffice.getText());
+                membre.setFaxe(faxe.getText());
+                Operation.modifyMembre(membre);
+                System.out.println(membre.getFaxe());
+            }
+            catch (Exception e1) {
+                e1.printStackTrace();
+            }
+
+        }
+        if (e.getSource() == submitModifyFormation) {
+            try {
+                Membre membre = Operation.chercherMembre(numPhone.getText());
+                Formation[] formation = new Formation[nbFormation+1];
+                for(int i=0 ;i<nbFormation+1;i++){
+                    formation[i]=new Formation(selectedDepartement[i],selectedNiveau[i],
+                            selectedOption[i],selectedAnnee[i]) ;
+                }
+                membre.setFormation(formation);
+                System.out.println(membre.getFormation()[0].getDepartement());
+                Operation.modifyFormation(membre);
+            }
+            catch (Exception e1) {
+                e1.printStackTrace();
+            }
+
+
+        }
+            this.pack();
     }
 
 }

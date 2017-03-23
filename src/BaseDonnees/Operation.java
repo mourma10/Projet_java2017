@@ -122,4 +122,42 @@ public static void ajouterMembre(Membre pers) throws Exception{
 
     }
 
-}
+    public static void modifyMembre(Membre pers) throws Exception{
+        String requete="update membres set prenom=\""
+                +pers.getPrenom()+"\",nom=\""
+                +pers.getNom()+"\",datenaiss=\""
+                +pers.getDateNaiss()+"\",email=\""
+                +pers.getEmail()+"\",adresse=\""
+                +pers.getAdresse()+"\",tel=\""
+                +pers.getTel()+"\",telbureau=\""
+                +pers.getTelBureau()+"\",faxe=\""
+                +pers.getFaxe()+"\" where tel=\""+pers.getTel()+"\"";
+        st.executeUpdate(requete);
+
+    }
+
+    public static void modifyFormation(Membre pers) throws Exception {
+        Formation [] formation=pers.getFormation();
+        int idFormation,i=(formation.length)-1;
+        String requete ;
+        requete="delete from membre_formation where membres_tel=\""+pers.getTel()+"\" " ;
+
+        while(i>=0){
+            requete = "select idFormations from Formation where Departement=\""+formation[i].getDepartement()+"\" and niveau=\""+formation[i].getNiveau()+"\" and `option`=\""+formation[i].getOption()+"\"";
+            rs=st.executeQuery(requete);
+            rs.next();
+            idFormation=rs.getInt("idFormations");
+            requete="insert into membre_formation values(\""
+                    +pers.getTel()+"\","
+                    +idFormation+",\""
+                    +formation[i].getAnnee()+"\")" ;
+            st.executeUpdate(requete);
+            i--;
+        }
+
+
+
+    }
+
+
+    }

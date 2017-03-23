@@ -1,23 +1,29 @@
 -- phpMyAdmin SQL Dump
--- version 4.4.10
--- http://www.phpmyadmin.net
+-- version 4.6.5.2
+-- https://www.phpmyadmin.net/
 --
--- Client :  localhost
--- Généré le :  Jeu 23 Mars 2017 à 13:54
--- Version du serveur :  5.5.42
--- Version de PHP :  5.6.10
+-- Host: 127.0.0.1
+-- Generation Time: Mar 23, 2017 at 09:03
+-- Server version: 5.7.17-0ubuntu0.16.04.1
+-- PHP Version: 7.1.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
 --
--- Base de données :  `GestAnciens`
+-- Database: `GestAnciens`
 --
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Admins`
+-- Table structure for table `Admins`
 --
 
 CREATE TABLE `Admins` (
@@ -26,7 +32,7 @@ CREATE TABLE `Admins` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Contenu de la table `Admins`
+-- Dumping data for table `Admins`
 --
 
 INSERT INTO `Admins` (`login`, `mdpasse`) VALUES
@@ -36,7 +42,7 @@ INSERT INTO `Admins` (`login`, `mdpasse`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Formation`
+-- Table structure for table `Formation`
 --
 
 CREATE TABLE `Formation` (
@@ -44,10 +50,10 @@ CREATE TABLE `Formation` (
   `Departement` varchar(45) NOT NULL,
   `niveau` varchar(45) NOT NULL,
   `Option` varchar(45) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Contenu de la table `Formation`
+-- Dumping data for table `Formation`
 --
 
 INSERT INTO `Formation` (`idFormations`, `Departement`, `niveau`, `Option`) VALUES
@@ -104,7 +110,7 @@ INSERT INTO `Formation` (`idFormations`, `Departement`, `niveau`, `Option`) VALU
 -- --------------------------------------------------------
 
 --
--- Structure de la table `membres`
+-- Table structure for table `membres`
 --
 
 CREATE TABLE `membres` (
@@ -119,30 +125,16 @@ CREATE TABLE `membres` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Contenu de la table `membres`
+-- Dumping data for table `membres`
 --
 
 INSERT INTO `membres` (`Tel`, `Prenom`, `Nom`, `DateNaiss`, `Email`, `Adresse`, `TelBureau`, `Faxe`) VALUES
-('111', 'ee', 'ee', '1899-01-01', 'ee', 'ee', '4', '4'),
-('123', 'ddd', 'ddd', '1999-12-31', 'dd', 'dd', '33', '33'),
-('12 345', 'jdsghv', 'dgsdfgdsfg', '0002-12-31', 'gdfsgdsf', 'dsfgdfsd', '67 568 756', '25 435'),
-('1 234', 'kjnbkh', 'jbnmvb', '0002-12-31', 'dsgfgfs', 'kjhhgv', '1 234', '1 234'),
-('222', 'ww', 'ww', '2222-01-22', 'ww', 'ww', '22', '22'),
-('323', 'rr', 'rr', '1111-01-11', 'r', 'r', '4', '4'),
-('333', 'tt', 'tt', '1999-12-31', 'tt', 'tt', '3', '3'),
-('345', 'rr', 'rr', '1999-12-31', 'rr', 'rr', '5', '5'),
-('363 546', 'test', 'test', '1999-12-31', 'test', 'test', '33', '33'),
-('3 333', 'ee', 'ee', '2222-01-22', 'w', 'w', '', '3'),
-('3 338', 'ee', 'ee', '2222-01-22', 'w', 'w', '', '3'),
-('444', 'aa', 'aa', '2000-12-31', 'aa', 'aa', '55', '55'),
-('445', 'ff', 'ff', '2016-01-05', 'ff', 'ff', '2', '2'),
-('666', 'dd', 'dd', '6666-03-07', 'rr', 'ff', '666', '666'),
-('774 009 183', 'lkffne', 'lkenflnewf', '0002-12-31', 'nfjkd.sb', 'apgjhfgl', '774 009 184', '774 009 184');
+('774 009 184', 'moussa', 'ndiaye', '1995-01-18', 'moussa@live.fr', 'dvhcdhv', '4 652 255', '2 644');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `membre_formation`
+-- Table structure for table `membre_formation`
 --
 
 CREATE TABLE `membre_formation` (
@@ -152,61 +144,63 @@ CREATE TABLE `membre_formation` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Contenu de la table `membre_formation`
+-- Dumping data for table `membre_formation`
 --
 
 INSERT INTO `membre_formation` (`membres_Tel`, `Formation_idFormations`, `annee`) VALUES
-('123', 1, '2003'),
-('123', 4, '2004'),
-('1 234', 39, '1963'),
-('12 345', 2, '1966'),
-('12 345', 9, '1962');
+('774 009 184', 1, '1960'),
+('774 009 184', 7, '1963');
 
 --
--- Index pour les tables exportées
+-- Indexes for dumped tables
 --
 
 --
--- Index pour la table `Admins`
+-- Indexes for table `Admins`
 --
 ALTER TABLE `Admins`
   ADD PRIMARY KEY (`login`);
 
 --
--- Index pour la table `Formation`
+-- Indexes for table `Formation`
 --
 ALTER TABLE `Formation`
   ADD PRIMARY KEY (`idFormations`);
 
 --
--- Index pour la table `membres`
+-- Indexes for table `membres`
 --
 ALTER TABLE `membres`
   ADD PRIMARY KEY (`Tel`);
 
 --
--- Index pour la table `membre_formation`
+-- Indexes for table `membre_formation`
 --
 ALTER TABLE `membre_formation`
+  ADD PRIMARY KEY (`membres_Tel`,`Formation_idFormations`),
   ADD KEY `fk_membre_formation_Formation1_idx` (`Formation_idFormations`),
   ADD KEY `fk_membre_formation_membres` (`membres_Tel`);
 
 --
--- AUTO_INCREMENT pour les tables exportées
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT pour la table `Formation`
+-- AUTO_INCREMENT for table `Formation`
 --
 ALTER TABLE `Formation`
-  MODIFY `idFormations` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=50;
+  MODIFY `idFormations` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 --
--- Contraintes pour les tables exportées
+-- Constraints for dumped tables
 --
 
 --
--- Contraintes pour la table `membre_formation`
+-- Constraints for table `membre_formation`
 --
 ALTER TABLE `membre_formation`
-  ADD CONSTRAINT `fk_membre_formation_membres` FOREIGN KEY (`membres_Tel`) REFERENCES `membres` (`Tel`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_membre_formation_Formation1` FOREIGN KEY (`Formation_idFormations`) REFERENCES `Formation` (`idFormations`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_membre_formation_Formation1` FOREIGN KEY (`Formation_idFormations`) REFERENCES `Formation` (`idFormations`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_membre_formation_membres` FOREIGN KEY (`membres_Tel`) REFERENCES `membres` (`Tel`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
