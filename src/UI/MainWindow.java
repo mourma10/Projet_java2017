@@ -67,14 +67,12 @@ public class MainWindow extends JFrame implements ActionListener {
      */
     private JTextField
             login /* Login du membre  a l'authentification*/,
-            passwd /* Mot de passe du membre  a l'authentification*/,
             firstName /* Prenom du membre */,
             lastName /* Nom du membre */,
             adress /* Adresse du membre */,
             email /* Email du membre */,
-            loginMember /*Login du membre choisi lors de l'ajout*/,
-            passwdMember /*Mot de passe du membre choisi lors de l'ajout*/,
             dateBirth /* Date de naisance du membre */;
+    private JPasswordField passwd /* Mot de passe du membre  a l'authentification*/;
 
     private JFormattedTextField
             numToSearch /* Numero du membre a chercher*/,
@@ -107,12 +105,10 @@ public class MainWindow extends JFrame implements ActionListener {
     public MainWindow() {
         mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setSize(800, 600);
         this.setLocationRelativeTo(null);
-        this.setResizable(false);
         this.getContentPane().add(mainPanel);
-        //this.setExtendedState(MainWindow.MAXIMIZED_BOTH);
+        this.setPreferredSize(new Dimension(1200, 700));
+        this.pack();
         header = WindowUtils.header();
         footer = WindowUtils.footer();
         textEcranConnexion = WindowUtils.textAccueil();
@@ -190,7 +186,7 @@ public class MainWindow extends JFrame implements ActionListener {
         panelLogin.add(labelLogin);
         panelLogin.add(login = new JTextField(10));
         panelLogin.add(labelPasswd);
-        panelLogin.add(passwd = new JTextField(10));
+        panelLogin.add(passwd = new JPasswordField(10));
 
         connexion = new JButton("connexion");
         connexion.addActionListener(this);
@@ -282,22 +278,38 @@ public class MainWindow extends JFrame implements ActionListener {
                 selectedDepartement[nbFormation] = (String) e.getItem();
                 switch (selectedDepartement[nbFormation]) {
                     case "Genie Informatique":
-                        options.removeItem("Biologie Appliquee");
-                        options.removeItem("Civil");
-                        options.removeItem("Mecanique");
+                        options.removeAllItems();
+                        options.addItem("");
+                        options.addItem("Informatique");
+                        options.addItem("Telecom");
                         break;
 
                     case "Genie Civil":
                         options.removeAllItems();
                         options.addItem("Civil");
-//                        options.removeItem("Informatique");
-//                        options.removeItem("Telecom");
                         break;
 
                     case "Genie Mecanique":
+                        options.removeAllItems();
                         options.addItem("Mecanique");
-                        options.removeItem("Informatique");
-                        options.removeItem("Telecom");
+                        break;
+
+                    case "Genie Electrique":
+                        options.removeAllItems();
+                        options.addItem("Electrique");
+                        break;
+                    case "Gestion":
+                        options.removeAllItems();
+                        options.addItem("Gestion");
+                        break;
+
+                    case "Genie Chimique et BA":
+                        options.removeAllItems();
+                        options.addItem("");
+                        options.addItem("Analyse Biologique");
+                        options.addItem("Chimie");
+                        options.addItem("Intustrie Alimentaire");
+                        break;
                 }
             }
         });
@@ -545,7 +557,7 @@ public class MainWindow extends JFrame implements ActionListener {
             BufferedImage myPicture =
                     ImageIO.read(getClass().getResource("./img.jpg"));
             Image myPictureScaled = myPicture.getScaledInstance(header.getWidth(),
-                    header.getHeight() + 100, Image.SCALE_SMOOTH);
+                    header.getHeight() + 200, Image.SCALE_SMOOTH);
             cover = new JLabel(new ImageIcon(myPictureScaled));
         } catch (IOException io) {
             io.printStackTrace();
