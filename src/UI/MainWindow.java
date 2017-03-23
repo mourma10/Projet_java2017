@@ -280,22 +280,38 @@ public class MainWindow extends JFrame implements ActionListener {
                 selectedDepartement[nbFormation] = (String) e.getItem();
                 switch (selectedDepartement[nbFormation]) {
                     case "Genie Informatique":
-                        options.removeItem("Biologie Appliquee");
-                        options.removeItem("Civil");
-                        options.removeItem("Mecanique");
+                        options.removeAllItems();
+                        options.addItem("");
+                        options.addItem("Informatique");
+                        options.addItem("Telecom");
                         break;
 
                     case "Genie Civil":
                         options.removeAllItems();
                         options.addItem("Civil");
-//                        options.removeItem("Informatique");
-//                        options.removeItem("Telecom");
                         break;
 
                     case "Genie Mecanique":
+                        options.removeAllItems();
                         options.addItem("Mecanique");
-                        options.removeItem("Informatique");
-                        options.removeItem("Telecom");
+                        break;
+
+                    case "Genie Electrique":
+                        options.removeAllItems();
+                        options.addItem("Electrique");
+                        break;
+                    case "Gestion":
+                        options.removeAllItems();
+                        options.addItem("Gestion");
+                        break;
+
+                    case "Genie Chimique et BA":
+                        options.removeAllItems();
+                        options.addItem("");
+                        options.addItem("Analyse Biologique");
+                        options.addItem("Chimie");
+                        options.addItem("Intustrie Alimentaire");
+                        break;
                 }
             }
         });
