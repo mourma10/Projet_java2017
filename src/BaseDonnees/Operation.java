@@ -136,19 +136,18 @@ public static void ajouterMembre(Membre pers) throws Exception{
 
     }
 
-    public static void modifyFormation(Membre pers) throws Exception {
-        Formation [] formation=pers.getFormation();
+    public static void modifyFormation(Formation[] formation,String tel ) throws Exception {
         int idFormation,i=(formation.length)-1;
         String requete ;
-        requete="delete from membre_formation where membres_tel=\""+pers.getTel()+"\" " ;
-
+        requete="delete from membre_formation where membres_tel=\""+tel+"\" " ;
+        st.executeUpdate(requete);
         while(i>=0){
             requete = "select idFormations from Formation where Departement=\""+formation[i].getDepartement()+"\" and niveau=\""+formation[i].getNiveau()+"\" and `option`=\""+formation[i].getOption()+"\"";
             rs=st.executeQuery(requete);
             rs.next();
             idFormation=rs.getInt("idFormations");
             requete="insert into membre_formation values(\""
-                    +pers.getTel()+"\","
+                    +tel+"\","
                     +idFormation+",\""
                     +formation[i].getAnnee()+"\")" ;
             st.executeUpdate(requete);

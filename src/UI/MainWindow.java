@@ -82,17 +82,17 @@ public class MainWindow extends JFrame implements ActionListener {
     /**
      * Zone de choix
      */
-    private JComboBox<String>
-            departements /*Departements */,
-            niveau /*Niveau */,
-            options /*Options */,
-            annee /* Annee formation suivie*/;
+    private JComboBox  <String> []
+            departements=new JComboBox[3] /*Departements */,
+            niveau=new JComboBox[3] /*Niveau */,
+            options=new JComboBox[3] /*Options */,
+            annee=new JComboBox[3] /* Annee formation suivie*/;
 
     private String[]
             selectedDepartement,
             selectedOption,
             selectedNiveau;
-    private String [] selectedAnnee = new String[3];
+    private String [] selectedAnnee = new String[6];
     private static int nbFormation = 0;
 
     private static final Font myFont = new Font("Helvetica Neue", Font.BOLD, 15);
@@ -118,9 +118,9 @@ public class MainWindow extends JFrame implements ActionListener {
         this.accueilContent = this.accueilContent();
         panelSearch = new JPanel();
         panelSearch.setLayout(new BoxLayout(panelSearch, BoxLayout.PAGE_AXIS));
-        selectedDepartement = new String[3];
-        selectedOption = new String[3];
-        selectedNiveau = new String[3];
+        selectedDepartement = new String[6];
+        selectedOption = new String[6];
+        selectedNiveau = new String[6];
     }
 
     /**
@@ -256,72 +256,163 @@ public class MainWindow extends JFrame implements ActionListener {
                 libOption = {"", "Informatique", "Telecom",
                         "Biologie Appliquee", "Civil", "Mecanique"};
         formation.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        departements = new JComboBox<>();
-        niveau = new JComboBox<>();
-        options = new JComboBox<>();
-        annee = new JComboBox<>();
-
-
+        departements[nbFormation] = new JComboBox<>();
+        niveau[nbFormation] = new JComboBox<>();
+        options[nbFormation] = new JComboBox<>();
+        annee[nbFormation] = new JComboBox<>();
 
         for (int i = 0; i < 6; i++)
-            departements.addItem(libDep[i]);
+            departements[nbFormation].addItem(libDep[i]);
         for (int i = 0; i < 6; i++)
-            niveau.addItem(libNiveau[i]);
+            niveau[nbFormation].addItem(libNiveau[i]);
         for (int i = 0; i < 5; i++)
-            options.addItem(libOption[i]);
+            options[nbFormation].addItem(libOption[i]);
         for (int i = 1960; i < 2017; i++)
-            annee.addItem(String.valueOf(i));
-        new JScrollPane(annee);
+            annee[nbFormation].addItem(String.valueOf(i));
+        new JScrollPane(annee[nbFormation]);
+        switch(nbFormation) {
+            case 0 :
+                departements[0].addItemListener(e -> {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    selectedDepartement[0] = (String) e.getItem();
+                    switch ((String) departements[0].getSelectedItem()) {
+                        case "Genie Informatique":
+                            options[0].removeAllItems();
+                            options[0].addItem("");
+                            options[0].addItem("Informatique");
+                            options[0].addItem("Telecom");
+                            break;
 
-        departements.addItemListener(e -> {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                selectedDepartement[nbFormation] = (String) e.getItem();
-                switch (selectedDepartement[nbFormation]) {
-                    case "Genie Informatique":
-                        options.removeAllItems();
-                        options.addItem("");
-                        options.addItem("Informatique");
-                        options.addItem("Telecom");
-                        break;
+                        case "Genie Civil":
+                            options[0].removeAllItems();
+                            options[0].addItem("Civil");
+                            break;
 
-                    case "Genie Civil":
-                        options.removeAllItems();
-                        options.addItem("Civil");
-                        break;
+                        case "Genie Mecanique":
+                            options[0].removeAllItems();
+                            options[0].addItem("Mecanique");
+                            break;
 
-                    case "Genie Mecanique":
-                        options.removeAllItems();
-                        options.addItem("Mecanique");
-                        break;
+                        case "Genie Electrique":
+                            options[0].removeAllItems();
+                            options[0].addItem("Electrique");
+                            break;
+                        case "Gestion":
+                            options[0].removeAllItems();
+                            options[0].addItem("Gestion");
+                            break;
 
-                    case "Genie Electrique":
-                        options.removeAllItems();
-                        options.addItem("Electrique");
-                        break;
-                    case "Gestion":
-                        options.removeAllItems();
-                        options.addItem("Gestion");
-                        break;
-
-                    case "Genie Chimique et BA":
-                        options.removeAllItems();
-                        options.addItem("");
-                        options.addItem("Analyse Biologique");
-                        options.addItem("Chimie");
-                        options.addItem("Intustrie Alimentaire");
-                        break;
+                        case "Genie Chimique et BA":
+                            options[0].removeAllItems();
+                            options[0].addItem("");
+                            options[0].addItem("Analyse Biologique");
+                            options[0].addItem("Chimie");
+                            options[0].addItem("Intustrie Alimentaire");
+                            break;
                 }
-            }
-        });
 
-        niveau.addItemListener(e -> {
+
+                }
+        });
+                break;
+            case 1 :
+                departements[1].addItemListener(e -> {
+                    if (e.getStateChange() == ItemEvent.SELECTED) {
+                        selectedDepartement[1] = (String) e.getItem();
+                        switch ((String) departements[1].getSelectedItem()) {
+                            case "Genie Informatique":
+                                options[1].removeAllItems();
+                                options[1].addItem("");
+                                options[1].addItem("Informatique");
+                                options[1].addItem("Telecom");
+                                break;
+
+                            case "Genie Civil":
+                                options[1].removeAllItems();
+                                options[1].addItem("Civil");
+                                break;
+
+                            case "Genie Mecanique":
+                                options[1].removeAllItems();
+                                options[1].addItem("Mecanique");
+                                break;
+
+                            case "Genie Electrique":
+                                options[1].removeAllItems();
+                                options[1].addItem("Electrique");
+                                break;
+                            case "Gestion":
+                                options[1].removeAllItems();
+                                options[1].addItem("Gestion");
+                                break;
+
+                            case "Genie Chimique et BA":
+                                options[1].removeAllItems();
+                                options[1].addItem("");
+                                options[1].addItem("Analyse Biologique");
+                                options[1].addItem("Chimie");
+                                options[1].addItem("Intustrie Alimentaire");
+                                break;
+                        }
+
+
+                    }
+                });
+                break;
+                case 2 :
+                departements[2].addItemListener(e -> {
+                    if (e.getStateChange() == ItemEvent.SELECTED) {
+                        selectedDepartement[2] = (String) e.getItem();
+                        switch ((String) departements[2].getSelectedItem()) {
+                            case "Genie Informatique":
+                                options[2].removeAllItems();
+                                options[2].addItem("");
+                                options[2].addItem("Informatique");
+                                options[2].addItem("Telecom");
+                                break;
+
+                            case "Genie Civil":
+                                options[2].removeAllItems();
+                                options[2].addItem("Civil");
+                                break;
+
+                            case "Genie Mecanique":
+                                options[2].removeAllItems();
+                                options[2].addItem("Mecanique");
+                                break;
+
+                            case "Genie Electrique":
+                                options[2].removeAllItems();
+                                options[2].addItem("Electrique");
+                                break;
+                            case "Gestion":
+                                options[2].removeAllItems();
+                                options[2].addItem("Gestion");
+                                break;
+
+                            case "Genie Chimique et BA":
+                                options[2].removeAllItems();
+                                options[2].addItem("");
+                                options[2].addItem("Analyse Biologique");
+                                options[2].addItem("Chimie");
+                                options[2].addItem("Intustrie Alimentaire");
+                                break;
+                        }
+
+
+                    }
+                });
+                break;
+    }
+/*
+        niveau[nbFormation].addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED)
                 selectedNiveau[nbFormation] = (String) e.getItem();
-        });
-
+        });*/
+/*
         options.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED)
-                selectedOption[nbFormation] = (String) e.getItem();
+                selectedOption[nbFormatikon] = (String) e.getItem();
         });
 
       selectedAnnee[nbFormation] = (String) annee.getSelectedItem();
@@ -329,16 +420,16 @@ public class MainWindow extends JFrame implements ActionListener {
         annee.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED)
                 selectedAnnee[nbFormation] = (String) e.getItem();
-        });
+        });*/
         formation.add(new JLabel("Departements"));
-        formation.add(departements);
+        formation.add(departements[nbFormation]);
         formation.add(new JLabel("Options"));
-        formation.add(options);
+        formation.add(options[nbFormation]);
         formation.add(new JLabel("Niveau"));
-        formation.add(niveau);
+        formation.add(niveau[nbFormation]);
 
         formation.add(new JLabel("Annee"));
-        formation.add(annee);
+        formation.add(annee[nbFormation]);
 
         formation.setBackground(Color.WHITE);
         return formation;
@@ -513,7 +604,6 @@ public class MainWindow extends JFrame implements ActionListener {
         submitModifyMember.addActionListener(this);
         submitModifyMember.setBackground(new Color(59, 89, 152));
         submitModifyMember.setForeground(Color.WHITE);
-        contact.add(submitModifyMember);
 
         /*Section formations*/
         addFormation = new JButton("+Ajouter une formation");
@@ -531,13 +621,15 @@ public class MainWindow extends JFrame implements ActionListener {
         submitModifyFormation.setForeground(Color.WHITE);
         submitModifyMember.addActionListener(this);
         submitModifyFormation.addActionListener(this);
-        formation.add(submitModifyFormation);
         /*Ajout des differents panneaux dans le panneau formAdd */
         formAdd.add(infoAuth);
         formAdd.add(privacy);
         formAdd.add(contact);
+        formAdd.add(submitModifyMember);
         formAdd.add(formation);
-        formAdd.add(submitAddMember);
+        formAdd.add(submitModifyFormation);
+
+        //  formAdd.add(submitAddMember);
 
         return formAdd;
     }
@@ -642,11 +734,15 @@ public class MainWindow extends JFrame implements ActionListener {
             this.authentification();
         }
         if (e.getSource() == addFormation) {
-            nbFormation++;
-            formation.add(this.formFormation());
-            formation.remove(addFormation);
-            formation.repaint();
-            formation.add(addFormation);
+            if (nbFormation == 2)
+                JOptionPane.showMessageDialog(panelContent,"Nombre de formations maximales atteintes");
+            else {
+                nbFormation++;
+                formation.add(this.formFormation());
+                formation.remove(addFormation);
+                formation.repaint();
+                formation.add(addFormation);
+            }
         }
         if (e.getSource() == submitSearch) {
 
@@ -732,8 +828,8 @@ public class MainWindow extends JFrame implements ActionListener {
         }
         if (e.getSource() == submitAddMember) {
             try {
-            		if(firstName.getText().equals("") || lastName.getText().equals("") ||
-            			departements.getSelectedIndex()==0||niveau.getSelectedIndex()==0||options.getSelectedIndex()==0)
+            		if(firstName.getText().equals("") || lastName.getText().equals(""))
+            			//departements[0].getSelectedIndex()==0||niveau[0].getSelectedIndex()==0||options[0].getSelectedIndex()==0)
 
             				JOptionPane.showMessageDialog(panelLogin,"Veuillez remplir tous les champs relatifs obligatoires");
 
@@ -747,8 +843,8 @@ public class MainWindow extends JFrame implements ActionListener {
 			                    System.out.println("nbformation = "+nbFormation);
 
 			                    for(int i=0 ;i<nbFormation+1;i++){
-			                        formation[i]=new Formation(selectedDepartement[i],selectedNiveau[i],
-			                        selectedOption[i],selectedAnnee[i]) ;
+			                        formation[i]=new Formation((String)departements[i].getSelectedItem(),(String)niveau[i].getSelectedItem(),
+                                            (String)options[i].getSelectedItem(),(String)annee[i].getSelectedItem()) ;
 			                    }
                                 Operation.ajouterMembre(new Membre(numPhone.getText(),firstName.getText(),lastName.getText(),
                                         dateBirth.getText(),email.getText(),adress.getText(),telOffice.getText(),faxe.getText(),formation));
@@ -802,20 +898,21 @@ public class MainWindow extends JFrame implements ActionListener {
                 numPhone.setText(membre.getTel());
                 telOffice.setText(membre.getTelBureau());
                 faxe.setText(membre.getFaxe());
-                departements.setSelectedItem(membre.getFormation()[0].getDepartement());
-                niveau.setSelectedItem(membre.getFormation()[0].getNiveau());
-                options.setSelectedItem(membre.getFormation()[0].getOption());
-                annee.setSelectedItem(membre.getFormation()[0].getAnnee());
-                for(int i=1 ; i<membre.getFormation().length; i++){
+                departements[0].setSelectedItem(membre.getFormation()[0].getDepartement());
+                niveau[0].setSelectedItem(membre.getFormation()[0].getNiveau());
+                options[0].setSelectedItem(membre.getFormation()[0].getOption());
+                annee[0].setSelectedItem(membre.getFormation()[0].getAnnee());
+                for(nbFormation=1 ; nbFormation<membre.getFormation().length; nbFormation++){
                     formation.add(this.formFormation());
                     formation.remove(addFormation);
                     formation.repaint();
                     formation.add(addFormation);
-                    departements.setSelectedItem(membre.getFormation()[i].getDepartement());
-                    niveau.setSelectedItem(membre.getFormation()[i].getNiveau());
-                    options.setSelectedItem(membre.getFormation()[i].getOption());
-                    annee.setSelectedItem(membre.getFormation()[i].getAnnee());
+                    departements[nbFormation].setSelectedItem(membre.getFormation()[nbFormation].getDepartement());
+                    niveau[nbFormation].setSelectedItem(membre.getFormation()[nbFormation].getNiveau());
+                    options[nbFormation].setSelectedItem(membre.getFormation()[nbFormation].getOption());
+                    annee[nbFormation].setSelectedItem(membre.getFormation()[nbFormation].getAnnee());
                 }
+                nbFormation--;
                 formAdd.remove(submitAddMember);
                 formation.repaint();
             }
@@ -839,7 +936,7 @@ public class MainWindow extends JFrame implements ActionListener {
                 membre.setTelBureau(telOffice.getText());
                 membre.setFaxe(faxe.getText());
                 Operation.modifyMembre(membre);
-                System.out.println(membre.getFaxe());
+             //   System.out.println(membre.getFaxe());
             }
             catch (Exception e1) {
                 e1.printStackTrace();
@@ -849,14 +946,16 @@ public class MainWindow extends JFrame implements ActionListener {
         if (e.getSource() == submitModifyFormation) {
             try {
                 Membre membre = Operation.chercherMembre(numPhone.getText());
+                System.out.println(nbFormation+"eee");
                 Formation[] formation = new Formation[nbFormation+1];
-                for(int i=0 ;i<nbFormation+1;i++){
-                    formation[i]=new Formation(selectedDepartement[i],selectedNiveau[i],
-                            selectedOption[i],selectedAnnee[i]) ;
+                for(int i=0;i<=nbFormation;i++){
+                    formation[i]=new Formation((String)departements[i].getSelectedItem(),(String)niveau[i].getSelectedItem(),
+                            (String)options[i].getSelectedItem(),(String)annee[i].getSelectedItem()) ;
                 }
-                membre.setFormation(formation);
-                System.out.println(membre.getFormation()[0].getDepartement());
-                Operation.modifyFormation(membre);
+                System.out.println(nbFormation+"eee");
+
+                System.out.println(formation[1].getOption());
+                Operation.modifyFormation(formation,membre.getTel());
             }
             catch (Exception e1) {
                 e1.printStackTrace();
