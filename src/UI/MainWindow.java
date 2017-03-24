@@ -61,6 +61,8 @@ public class MainWindow extends JFrame implements ActionListener {
     private final JLabel
             textEcranConnexion /* Text de l'ecran de Connexion*/;
     private JLabel cover /* Photo de couverture*/;
+    private JLabel logo /* logo UCAD*/;
+
 
     /**
      * Zone de saisies
@@ -95,7 +97,13 @@ public class MainWindow extends JFrame implements ActionListener {
     private String [] selectedAnnee = new String[6];
     private static int nbFormation = 0;
 
-    private static final Font myFont = new Font("Helvetica Neue", Font.BOLD, 15);
+    private static final Font myFont = new Font("DecoType Naskh", Font.BOLD, 15);
+//    Helvetica Neue
+//    les polices
+//    -Times New Roman
+//    -Lucida Sans Typewriter
+//    -DecoType Naskh
+
 
 
     /**
@@ -130,34 +138,37 @@ public class MainWindow extends JFrame implements ActionListener {
      */
     private JPanel menu() {
         JPanel menu = new JPanel();
-        menu.setLayout(new GridLayout(4,1));
+        menu.setLayout(new GridLayout(5,1));
         menu.setBackground(new Color(59, 89, 152));
 
         accueil = new JButton("Accueil");
         searchMember = new JButton("Rechercher");
         addMember = new JButton("Ajouter");
         deconnexion = new JButton("Deconnexion");
+        accueil.setFont(new Font("Arial", Font.PLAIN, 20));
+        searchMember.setFont(new Font("Arial", Font.PLAIN, 20));
+        addMember.setFont(new Font("Arial", Font.PLAIN, 20));
+        deconnexion.setFont(new Font("Arial", Font.PLAIN, 20));
+
 
         accueil.addActionListener(this);
         searchMember.addActionListener(this);
         addMember.addActionListener(this);
         deconnexion.addActionListener(this);
 
-        /*accueil.setContentAreaFilled(false);
-        searchMember.setContentAreaFilled(false);
-        addMember.setContentAreaFilled(false);
-        deconnexion.setContentAreaFilled(false);*/
-
-        /*accueil.setForeground(Color.WHITE);
-        searchMember.setForeground(Color.WHITE);
-        addMember.setForeground(Color.WHITE);
-        deconnexion.setForeground(Color.WHITE);*/
         accueil.setForeground(new Color(59,89,152));
         searchMember.setBackground(new Color(59,89,152));
         addMember.setBackground(new Color(59,89,152));
         deconnexion.setBackground(new Color(59,89,152));
 
-
+        try {
+            BufferedImage mylogo =
+                    ImageIO.read(getClass().getResource("./Images/logo_ucad.png"));
+            logo = new JLabel(new ImageIcon(mylogo));
+            menu.add(logo, BorderLayout.NORTH);
+        } catch (IOException io) {
+            io.printStackTrace();
+        }
         menu.add(accueil);
         menu.add(addMember);
         menu.add(searchMember);
@@ -210,7 +221,7 @@ public class MainWindow extends JFrame implements ActionListener {
         panelContent.add(footer, BorderLayout.SOUTH);
         try {
             BufferedImage myPicture =
-                    ImageIO.read(getClass().getResource("./img.jpg"));
+                    ImageIO.read(getClass().getResource("./Images/img6.png"));
             cover = new JLabel(new ImageIcon(myPicture));
             panelContent.add(cover, BorderLayout.WEST);
         } catch (IOException io) {
@@ -231,16 +242,20 @@ public class MainWindow extends JFrame implements ActionListener {
     private JPanel accueilContent() {
         JPanel accueilContent = new JPanel();
         JPanel content = new JPanel();
-        content.setLayout(new BoxLayout(content, BoxLayout.PAGE_AXIS));
+        content.setLayout(new BoxLayout(content, BoxLayout.X_AXIS));
         content.setBackground(new Color(216, 223, 234));
-        JLabel pic;
+        JLabel pic,pic1,pic2;
         accueilContent.setLayout(new BorderLayout());
         try {
             BufferedImage myPicture =
-                    ImageIO.read(getClass().getResource("./img.jpg"));
-            pic = new JLabel(new ImageIcon(myPicture));
-            content.add(pic);
-            accueilContent.add(content, BorderLayout.WEST);
+                    ImageIO.read(getClass().getResource("./Images/img1.jpeg"));
+            pic1 = new JLabel(new ImageIcon(myPicture));
+            content.add(pic1);
+            BufferedImage myPictures =
+                    ImageIO.read(getClass().getResource("./Images/img2.jpg"));
+            pic2 = new JLabel(new ImageIcon(myPictures));
+            content.add(pic2);
+            accueilContent.add(content, BorderLayout.CENTER);
         } catch (IOException io) {
             io.printStackTrace();
         }
@@ -647,7 +662,7 @@ public class MainWindow extends JFrame implements ActionListener {
         panelContent.remove(cover);
         try {
             BufferedImage myPicture =
-                    ImageIO.read(getClass().getResource("./img.jpg"));
+                    ImageIO.read(getClass().getResource("./Images/img7.png"));
             Image myPictureScaled = myPicture.getScaledInstance(header.getWidth(),
                     header.getHeight() + 200, Image.SCALE_SMOOTH);
             cover = new JLabel(new ImageIcon(myPictureScaled));
