@@ -10,6 +10,7 @@ import java.awt.*;
  * @author mamour on 17/03/17.
  */
 class WindowUtils {
+    static Color colorForm = new Color(1, 157, 228);
 
     static JPanel header() {
         JPanel test = new JPanel();
