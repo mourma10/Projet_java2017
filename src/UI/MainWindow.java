@@ -15,22 +15,20 @@ import java.text.*;
 import java.sql.Date;
 
 /**
- * @author mamour on 17/03/17.
+ * @author amaM on 17/03/17.
  */
 public class MainWindow extends JFrame implements ActionListener {
     /**
      * Panneaux qui seront utilises dans notre
      * aplication
      */
-    private JPanel
-            mainPanel /*Panneau principal*/;
+    private JPanel mainPanel /*Panneau principal*/;
     private JPanel header /* Header*/;
     private JPanel menu /* Menu*/;
     private final JPanel footer /* Footer*/;
     private JPanel panelLogin /* Panneau pour le formulaire d'authentification*/;
     private JPanel panelContent/* Panneau qui va gerer le contenu de notre app*/;
     private JPanel accueilContent /*Panneau qui va contenir les elements de la page d'accueil*/;
-    private JPanel activity /* Panneau qui va contenir les activites de la personne connecte*/;
     private JPanel formAdd /* Panneau qui va contenir le formulaire d'ajout*/;
     private JPanel formSearch/*Panneau qui va contenir le formulaire de recherche*/;
     private JPanel mainFormation;
@@ -96,7 +94,7 @@ public class MainWindow extends JFrame implements ActionListener {
             selectedDepartement,
             selectedOption,
             selectedNiveau;
-    private String[] selectedAnnee = new String[6];
+
     private static int nbFormation = 0;
 
     private static final Font myFont = new Font("DecoType Naskh", Font.BOLD, 15);
@@ -140,7 +138,7 @@ public class MainWindow extends JFrame implements ActionListener {
     private JPanel menu() {
         JPanel menu = new JPanel();
         menu.setLayout(new GridLayout(5, 1));
-        menu.setBackground(new Color(59, 89, 152));
+        menu.setBackground(new Color(29, 32, 44));
 
         accueil = new JButton("Accueil");
         searchMember = new JButton("Rechercher");
@@ -158,9 +156,17 @@ public class MainWindow extends JFrame implements ActionListener {
         deconnexion.addActionListener(this);
 
         accueil.setForeground(Color.BLACK);
-        searchMember.setBackground(new Color(59, 89, 152));
-        addMember.setBackground(new Color(59, 89, 152));
-        deconnexion.setBackground(new Color(59, 89, 152));
+        accueil.setBorderPainted(false);
+        accueil.setOpaque(true);
+        searchMember.setBackground(new Color(29, 32, 44));
+        searchMember.setBorderPainted(false);
+        searchMember.setOpaque(true);
+        addMember.setBackground(new Color(29, 32, 44));
+        addMember.setBorderPainted(false);
+        addMember.setOpaque(true);
+        deconnexion.setBackground(new Color(29, 32, 44));
+        deconnexion.setBorderPainted(false);
+        deconnexion.setOpaque(true);
         addMember.setForeground(Color.WHITE);
         searchMember.setForeground(Color.WHITE);
         deconnexion.setForeground(Color.WHITE);
@@ -189,7 +195,7 @@ public class MainWindow extends JFrame implements ActionListener {
     private JPanel panelLogin() {
         JPanel panelLogin = new JPanel();
         panelLogin.setLayout(new FlowLayout(FlowLayout.LEFT));
-        panelLogin.setBackground(new Color(59, 89, 152));
+        panelLogin.setBackground(new Color(29, 32, 34));
 
         JLabel labelLogin = new JLabel("Login ");
         JLabel labelPasswd = new JLabel("Mot de passe ");
@@ -250,11 +256,9 @@ public class MainWindow extends JFrame implements ActionListener {
         content.setBackground(new Color(216, 223, 234));
         JLabel pic, pic1, pic2;
         accueilContent.setLayout(new BorderLayout());
+
         try {
-            BufferedImage myPicture =
-                    ImageIO.read(getClass().getResource("./Images/img1.jpeg"));
-            pic1 = new JLabel(new ImageIcon(myPicture));
-            content.add(pic1);
+
             BufferedImage myPictures =
                     ImageIO.read(getClass().getResource("./Images/img2.jpg"));
             pic2 = new JLabel(new ImageIcon(myPictures));
@@ -263,6 +267,7 @@ public class MainWindow extends JFrame implements ActionListener {
         } catch (IOException io) {
             io.printStackTrace();
         }
+        content.add(textEcranConnexion, BorderLayout.EAST);
         accueilContent.setBackground(new Color(216, 223, 234));
         return accueilContent;
     }
@@ -271,21 +276,19 @@ public class MainWindow extends JFrame implements ActionListener {
         JPanel formation = new JPanel();
         String[] libDep = {"", "Genie Informatique", "Genie Mecanique", "Genie Electrique",
                 "Genie Civil", "Genie Chimique et BA", "Gestion"},
-                libNiveau = {"", "DUT", "DST", "DIC", "DESCAF", "DEC", "DIT"},
-                libOption = {"", "Informatique", "Telecom",
-                        "Biologie Appliquee", "Civil", "Mecanique"};
+                libNiveauICE = {"", "DUT", "DIC", "DST", "Licence", "Master"},
+                libNiveauM = {"", "DUT", "DIC", "Licence", "Master"},
+                libNiveauC = {"", "DUT", "DST", "DIC", "Licence", "DIT","Master"},
+                libNiveauG = {"", "DUT", "DST", "DEC", "DESECG", "Licence", "Master", "DESCAF"};
+
         formation.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
         departements[nbFormation] = new JComboBox<>();
         niveau[nbFormation] = new JComboBox<>();
         options[nbFormation] = new JComboBox<>();
         annee[nbFormation] = new JComboBox<>();
 
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < 7; i++)
             departements[nbFormation].addItem(libDep[i]);
-        for (int i = 0; i < 6; i++)
-            niveau[nbFormation].addItem(libNiveau[i]);
-        for (int i = 0; i < 5; i++)
-            options[nbFormation].addItem(libOption[i]);
         for (int i = 1960; i < 2017; i++)
             annee[nbFormation].addItem(String.valueOf(i));
         new JScrollPane(annee[nbFormation]);
@@ -300,25 +303,41 @@ public class MainWindow extends JFrame implements ActionListener {
                                 options[0].addItem("");
                                 options[0].addItem("Informatique");
                                 options[0].addItem("Telecom");
+                                niveau[0].removeAllItems();
+                                for (String aLibNiveauICE1 : libNiveauICE)
+                                    niveau[0].addItem(aLibNiveauICE1);
                                 break;
 
                             case "Genie Civil":
                                 options[0].removeAllItems();
                                 options[0].addItem("Civil");
+                                niveau[0].removeAllItems();
+                                for (String aLibNiveauICE1 : libNiveauICE)
+                                    niveau[0].addItem(aLibNiveauICE1);
                                 break;
 
                             case "Genie Mecanique":
                                 options[0].removeAllItems();
                                 options[0].addItem("Mecanique");
+                                niveau[0].removeAllItems();
+                                niveau[0].removeAllItems();
+                                for (String aLibNiveauM : libNiveauM) niveau[0].addItem(aLibNiveauM);
                                 break;
 
                             case "Genie Electrique":
                                 options[0].removeAllItems();
                                 options[0].addItem("Electrique");
+                                niveau[0].removeAllItems();
+                                for (String aLibNiveauICE : libNiveauICE)
+                                    niveau[0].addItem(aLibNiveauICE);
+
                                 break;
                             case "Gestion":
                                 options[0].removeAllItems();
                                 options[0].addItem("Gestion");
+                                niveau[0].removeAllItems();
+                                for (String aLibNiveauG : libNiveauG)
+                                    niveau[0].addItem(aLibNiveauG);
                                 break;
 
                             case "Genie Chimique et BA":
@@ -327,10 +346,11 @@ public class MainWindow extends JFrame implements ActionListener {
                                 options[0].addItem("Analyse Biologique");
                                 options[0].addItem("Chimie");
                                 options[0].addItem("Intustrie Alimentaire");
+                                niveau[0].removeAllItems();
+                                for (String aLibNiveauC : libNiveauC)
+                                    niveau[0].addItem(aLibNiveauC);
                                 break;
                         }
-
-
                     }
                 });
                 break;
@@ -344,25 +364,41 @@ public class MainWindow extends JFrame implements ActionListener {
                                 options[1].addItem("");
                                 options[1].addItem("Informatique");
                                 options[1].addItem("Telecom");
+                                niveau[1].removeAllItems();
+                                for (String aLibNiveauICE1 : libNiveauICE)
+                                    niveau[1].addItem(aLibNiveauICE1);
                                 break;
 
                             case "Genie Civil":
                                 options[1].removeAllItems();
                                 options[1].addItem("Civil");
+                                niveau[1].removeAllItems();
+                                for (String aLibNiveauICE : libNiveauICE)
+                                    niveau[1].addItem(aLibNiveauICE);
                                 break;
 
                             case "Genie Mecanique":
                                 options[1].removeAllItems();
                                 options[1].addItem("Mecanique");
+                                niveau[1].removeAllItems();
+                                for (String aLibNiveauM : libNiveauM)
+                                    niveau[1].addItem(aLibNiveauM);
                                 break;
 
                             case "Genie Electrique":
                                 options[1].removeAllItems();
                                 options[1].addItem("Electrique");
+                                niveau[1].removeAllItems();
+                                for (String aLibNiveauICE : libNiveauICE)
+                                    niveau[1].addItem(aLibNiveauICE);
                                 break;
+
                             case "Gestion":
                                 options[1].removeAllItems();
                                 options[1].addItem("Gestion");
+                                niveau[1].removeAllItems();
+                                for (String aLibNiveauG : libNiveauG)
+                                    niveau[1].addItem(aLibNiveauG);
                                 break;
 
                             case "Genie Chimique et BA":
@@ -371,6 +407,9 @@ public class MainWindow extends JFrame implements ActionListener {
                                 options[1].addItem("Analyse Biologique");
                                 options[1].addItem("Chimie");
                                 options[1].addItem("Intustrie Alimentaire");
+                                niveau[1].removeAllItems();
+                                for (String aLibNiveauC : libNiveauC)
+                                    niveau[1].addItem(aLibNiveauC);
                                 break;
                         }
 
@@ -388,25 +427,41 @@ public class MainWindow extends JFrame implements ActionListener {
                                 options[2].addItem("");
                                 options[2].addItem("Informatique");
                                 options[2].addItem("Telecom");
+                                niveau[2].removeAllItems();
+                                for (String aLibNiveauICE : libNiveauICE)
+                                    niveau[2].addItem(aLibNiveauICE);
                                 break;
 
                             case "Genie Civil":
                                 options[2].removeAllItems();
                                 options[2].addItem("Civil");
+                                niveau[2].removeAllItems();
+                                for (String aLibNiveauICE : libNiveauICE)
+                                    niveau[2].addItem(aLibNiveauICE);
                                 break;
 
                             case "Genie Mecanique":
                                 options[2].removeAllItems();
                                 options[2].addItem("Mecanique");
+                                niveau[2].removeAllItems();
+                                for (String aLibNiveauM : libNiveauM)
+                                    niveau[2].addItem(aLibNiveauM);
                                 break;
 
                             case "Genie Electrique":
                                 options[2].removeAllItems();
                                 options[2].addItem("Electrique");
+                                niveau[2].removeAllItems();
+                                for (String aLibNiveauICE : libNiveauICE)
+                                    niveau[2].addItem(aLibNiveauICE);
                                 break;
+
                             case "Gestion":
                                 options[2].removeAllItems();
                                 options[2].addItem("Gestion");
+                                niveau[2].removeAllItems();
+                                for (String aLibNiveauG : libNiveauG)
+                                    niveau[2].addItem(aLibNiveauG);
                                 break;
 
                             case "Genie Chimique et BA":
@@ -415,7 +470,11 @@ public class MainWindow extends JFrame implements ActionListener {
                                 options[2].addItem("Analyse Biologique");
                                 options[2].addItem("Chimie");
                                 options[2].addItem("Intustrie Alimentaire");
+                                niveau[2].removeAllItems();
+                                for (String aLibNiveauC : libNiveauC)
+                                    niveau[2].addItem(aLibNiveauC);
                                 break;
+
                         }
 
 
@@ -423,23 +482,6 @@ public class MainWindow extends JFrame implements ActionListener {
                 });
                 break;
         }
-/*
-        niveau[nbFormation].addItemListener(e -> {
-            if (e.getStateChange() == ItemEvent.SELECTED)
-                selectedNiveau[nbFormation] = (String) e.getItem();
-        });*/
-/*
-        options.addItemListener(e -> {
-            if (e.getStateChange() == ItemEvent.SELECTED)
-                selectedOption[nbFormatikon] = (String) e.getItem();
-        });
-
-      selectedAnnee[nbFormation] = (String) annee.getSelectedItem();
-
-        annee.addItemListener(e -> {
-            if (e.getStateChange() == ItemEvent.SELECTED)
-                selectedAnnee[nbFormation] = (String) e.getItem();
-        });*/
         formation.add(new JLabel("Departements"));
         formation.add(departements[nbFormation]);
         formation.add(new JLabel("Options"));
@@ -720,9 +762,9 @@ public class MainWindow extends JFrame implements ActionListener {
         }
         if (e.getSource() == accueil) {
             addMember.setForeground(Color.WHITE);
-            addMember.setBackground(new Color(59, 89, 152));
+            addMember.setBackground(new Color(29, 32, 44));
             searchMember.setForeground(Color.WHITE);
-            searchMember.setBackground(new Color(59, 89, 152));
+            searchMember.setBackground(new Color(29, 32, 44));
             if (formAdd.isVisible())
                 formAdd.setVisible(false);
             if (panelSearch.isVisible())
@@ -735,9 +777,9 @@ public class MainWindow extends JFrame implements ActionListener {
         }
         if (e.getSource() == addMember) {
             accueil.setForeground(Color.WHITE);
-            accueil.setBackground(new Color(59, 89, 152));
+            accueil.setBackground(new Color(29, 32, 44));
             searchMember.setForeground(Color.WHITE);
-            searchMember.setBackground(new Color(59, 89, 152));
+            searchMember.setBackground(new Color(29, 32, 44));
             if (accueilContent.isVisible())
                 accueilContent.setVisible(false);
             if (panelSearch.isVisible())
@@ -750,9 +792,9 @@ public class MainWindow extends JFrame implements ActionListener {
         }
         if (e.getSource() == searchMember) {
             accueil.setForeground(Color.WHITE);
-            accueil.setBackground(new Color(59, 89, 152));
+            accueil.setBackground(new Color(29, 32, 44));
             addMember.setForeground(Color.WHITE);
-            addMember.setBackground(new Color(59, 89, 152));
+            addMember.setBackground(new Color(29, 32, 44));
             if (accueilContent.isVisible())
                 accueilContent.setVisible(false);
             if (formAdd.isVisible())
@@ -805,10 +847,6 @@ public class MainWindow extends JFrame implements ActionListener {
                     String[] labelInfo = {"Numero", "Nom", "Prenom", "Date", "Adresse", "Faxe", "TelBureau", "Email"};
                     for (int i = 0; i < 8; i++)
                         panelResInfo.add(new JLabel(labelInfo[i]));
-
-                        /*String[] labelForm = {"Departement","Option","Niveau","Annee"};
-                        for (int i = 0;i<4;i++)
-                            panelResForm.add(new JLa bel(labelForm[i]));*/
 
                     panelResInfo.add(new JLabel(membre.getTel()));
                     panelResInfo.add(new JLabel(membre.getNom()));
@@ -868,8 +906,6 @@ public class MainWindow extends JFrame implements ActionListener {
         if (e.getSource() == submitAddMember) {
             try {
                 if (firstName.getText().equals("") || lastName.getText().equals(""))
-                    //departements[0].getSelectedIndex()==0||niveau[0].getSelectedIndex()==0||options[0].getSelectedIndex()==0)
-
                     JOptionPane.showMessageDialog(panelLogin, "Veuillez remplir tous les champs relatifs obligatoires");
 
                 else {
@@ -958,7 +994,6 @@ public class MainWindow extends JFrame implements ActionListener {
         if (e.getSource() == submitModifyMember) {
             try {
                 Membre membre = Operation.chercherMembre(numPhone.getText());
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
                 membre.setNom(firstName.getText());
                 membre.setPrenom(lastName.getText());
                 membre.setDateNaiss((dateBirth.getText()));
@@ -968,7 +1003,6 @@ public class MainWindow extends JFrame implements ActionListener {
                 membre.setTelBureau(telOffice.getText());
                 membre.setFaxe(faxe.getText());
                 Operation.modifyMembre(membre);
-                //   System.out.println(membre.getFaxe());
             } catch (Exception e1) {
                 e1.printStackTrace();
             }

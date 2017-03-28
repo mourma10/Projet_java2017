@@ -7,18 +7,18 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 
 /**
- * @author mamour on 17/03/17.
+ * @author AmaM on 17/03/17.
  */
 class WindowUtils {
     static Color colorForm = new Color(1, 157, 228);
 
     static JPanel header() {
         JPanel test = new JPanel();
-        test.setLayout(new BorderLayout());
-        test.setBackground(new Color(59, 89, 152));
+        test.setLayout(new FlowLayout(FlowLayout.CENTER));
+        test.setBackground(new Color(29, 32, 34));
         JLabel label = new JLabel("Association des Anciens de l'ESP\n");
-        label.setFont(new Font("Helvetica Neue", Font.BOLD, 35));
-        test.add(label, BorderLayout.WEST);
+        label.setFont(new Font("Helvetica Neue", Font.BOLD, 40));
+        test.add(label, BorderLayout.CENTER);
         label.setForeground(Color.WHITE);
         return test;
     }
@@ -26,23 +26,22 @@ class WindowUtils {
     static JPanel footer() {
         JPanel footer = new JPanel();
         footer.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        footer.add(new JLabel("Parametres"));
-        footer.add(new JLabel("Confidentialite"));
-        footer.add(new JLabel("A propos"));
-        footer.add(new JLabel("Aide"));
         footer.add(new JLabel("@Copyright AMAM 2017"));
         footer.setBackground(Color.WHITE);
         return footer;
     }
 
     static JLabel textAccueil() {
-        return new JLabel("<html>Et quia Mesopotamiae tractus omnes crebro inquietari <br>" +
-                "sueti praetenturis et stationibus servabantur agrariis, laevorsum flexo itinere <br>" +
-                "Osdroenae subsederat extimas partes, novum parumque aliquando temptatum commentum <br>" +
-                "adgressus. quod si impetrasset, <br>" +
-                "fulminis modo cuncta vastarat. erat autem quod cogitabat huius modi.<br>" +
-                "Inter has ruinarum varietates a Nisibi quam tuebatur accitus Vrsicinus, cui nos <br>" +
-                "obsecuturos iunxerat imperiale praeceptum, dispicere litis exitialis certamina <br></html>", SwingConstants.CENTER);
+        return new JLabel("<html>Le but de cette association d'anciens élèves est :<br>" +
+                "<br>" +
+                " d'aider son établissement à poursuivre sa tâche éducative :<br>" +
+                " aide financière, apport d'expertise et de compétence, <br>" +
+                " aide à l'entrée dans la vie active, <br>" +
+                " aides pour les fêtes de l'établissement…<br>" +
+                "Elle permet de prolonger les liens de camaraderie, <br>" +
+                "de fédérer les étudiants actuels et anciens de l'école autour <br>" +
+                "d'un réseau pour favoriser les échanges et l'insertion professionnelle.<br>" +
+                " Les anciens élèves sont la « mémoire » de l'établissement !!! </html>", SwingConstants.CENTER);
     }
 
     static Border myBorder(String title, Color color, int epaisseur) {
