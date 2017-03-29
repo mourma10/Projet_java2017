@@ -15,7 +15,7 @@ import java.text.*;
 import java.sql.Date;
 
 /**
- * @author amaM on 17/03/17.
+ * @author amam on 17/03/17.
  */
 public class MainWindow extends JFrame implements ActionListener {
     /**
@@ -35,6 +35,7 @@ public class MainWindow extends JFrame implements ActionListener {
     private JPanel formation;
     private JPanel panelSearch;
     private JPanel panelResultat;
+    private JPanel panelMembres;
 
     /**
      * Boutons de notre application
@@ -49,6 +50,7 @@ public class MainWindow extends JFrame implements ActionListener {
             rmMember /*Suppression d'un membre*/,
             searchMember /* Bouton de navigation du menu qui charge
                             le formulaire de recherche*/,
+            membres, /* Listes des membres*/
             submitAddMember /* Bouton de validation pour l'ajout*/,
             submitSearch /* Bouton de validation pour la recherche*/,
             submitModifyMember,/*Bouton validation de modif des infos */
@@ -124,6 +126,7 @@ public class MainWindow extends JFrame implements ActionListener {
         this.accueilContent = this.accueilContent();
         panelResultat = new JPanel();
         panelSearch = new JPanel();
+        panelMembres = new JPanel();
         panelSearch.setLayout(new BoxLayout(panelSearch, BoxLayout.PAGE_AXIS));
         selectedDepartement = new String[6];
         selectedOption = new String[6];
@@ -137,20 +140,23 @@ public class MainWindow extends JFrame implements ActionListener {
      */
     private JPanel menu() {
         JPanel menu = new JPanel();
-        menu.setLayout(new GridLayout(5, 1));
+        menu.setLayout(new GridLayout(6, 1));
         menu.setBackground(new Color(29, 32, 44));
 
         accueil = new JButton("Accueil");
+        membres = new JButton("Membres");
         searchMember = new JButton("Rechercher");
         addMember = new JButton("Ajouter");
         deconnexion = new JButton("Deconnexion");
         accueil.setFont(new Font("Arial", Font.PLAIN, 20));
+        membres.setFont(new Font("Arial", Font.PLAIN, 20));
         searchMember.setFont(new Font("Arial", Font.PLAIN, 20));
         addMember.setFont(new Font("Arial", Font.PLAIN, 20));
         deconnexion.setFont(new Font("Arial", Font.PLAIN, 20));
 
 
         accueil.addActionListener(this);
+        membres.addActionListener(this);
         searchMember.addActionListener(this);
         addMember.addActionListener(this);
         deconnexion.addActionListener(this);
@@ -159,6 +165,9 @@ public class MainWindow extends JFrame implements ActionListener {
         accueil.setBorderPainted(false);
         accueil.setOpaque(true);
         searchMember.setBackground(new Color(29, 32, 44));
+        membres.setBackground(new Color(29, 32, 44));
+        membres.setBorderPainted(false);
+        membres.setOpaque(true);
         searchMember.setBorderPainted(false);
         searchMember.setOpaque(true);
         addMember.setBackground(new Color(29, 32, 44));
@@ -180,6 +189,7 @@ public class MainWindow extends JFrame implements ActionListener {
             io.printStackTrace();
         }
         menu.add(accueil);
+        menu.add(membres);
         menu.add(addMember);
         menu.add(searchMember);
         menu.add(deconnexion);
@@ -222,8 +232,8 @@ public class MainWindow extends JFrame implements ActionListener {
      * Ecran de connexion
      */
     public void authentification() {
-        panelContent = new JPanel();
         panelLogin = this.panelLogin();
+        panelContent = new JPanel();
         panelContent.setLayout(new BorderLayout());
         header.add(panelLogin, BorderLayout.EAST);
         panelContent.add(header, BorderLayout.NORTH);
@@ -511,41 +521,196 @@ public class MainWindow extends JFrame implements ActionListener {
         mainFormation = new JPanel();
         mainFormation.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
         formAdd.setLayout(new BoxLayout(formAdd, BoxLayout.PAGE_AXIS));
-        privacy.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        contact.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        privacy.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        contact.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 10));
         formation.setLayout(new BoxLayout(formation, BoxLayout.Y_AXIS));
 
 
         /*Section informations personnelles*/
-        privacy.add(new JLabel("Telephone"));
         privacy.add(numPhone = new JFormattedTextField(NumberFormat.getIntegerInstance()));
         numPhone.setPreferredSize(new Dimension(150, 30));
-        privacy.add(new JLabel("Prenom"));
+        numPhone.setText("Telephone");
+        numPhone.setForeground(Color.GRAY);
+        numPhone.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (numPhone.getText().equals("Telephone")) {
+                    numPhone.setText("");
+                    numPhone.setForeground(Color.BLACK);
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (numPhone.getText().equals("")) {
+                    numPhone.setText("Telephone");
+                    numPhone.setForeground(Color.GRAY);
+                } else {
+                    numPhone.setText(numPhone.getText());
+                    numPhone.setForeground(Color.BLACK);
+                }
+            }
+        });
+
         privacy.add(firstName = new JTextField(15));
-        firstName.setPreferredSize(new Dimension(15, 30));
-        privacy.add(new JLabel("Nom"));
+        firstName.setPreferredSize(new Dimension(150, 30));
+        firstName.setText("Prenom");
+        firstName.setForeground(Color.GRAY);
+        firstName.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                firstName.setText("");
+                firstName.setForeground(Color.BLACK);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (firstName.getText().equals("")) {
+                    firstName.setText("Prenom");
+                    firstName.setForeground(Color.GRAY);
+                } else {
+                    firstName.setText(firstName.getText());
+                    firstName.setForeground(Color.BLACK);
+                }
+            }
+        });
         privacy.add(lastName = new JTextField(15));
-        lastName.setPreferredSize(new Dimension(15, 30));
-        privacy.add(new JLabel("Date de Naissance"));
+        lastName.setPreferredSize(new Dimension(150, 30));
+        lastName.setText("Nom");
+        lastName.setForeground(Color.GRAY);
+        lastName.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                lastName.setText("");
+                lastName.setForeground(Color.BLACK);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (lastName.getText().equals("")) {
+                    lastName.setText("Nom");
+                    lastName.setForeground(Color.GRAY);
+                } else {
+                    lastName.setText(lastName.getText());
+                    lastName.setForeground(Color.BLACK);
+                }
+            }
+        });
         privacy.add(dateBirth = new JTextField(15));
         dateBirth.setPreferredSize(new Dimension(150, 30));
+        dateBirth.setText("yyyy-mm-dd");
+        dateBirth.setForeground(Color.GRAY);
+        dateBirth.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                dateBirth.setText("");
+                dateBirth.setForeground(Color.BLACK);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (dateBirth.getText().equals("")) {
+                    dateBirth.setText("yyyy-mm-dd");
+                    dateBirth.setForeground(Color.GRAY);
+                } else {
+                    dateBirth.setText(dateBirth.getText());
+                    dateBirth.setForeground(Color.BLACK);
+                }
+            }
+        });
         privacy.setBorder(WindowUtils.myBorder("Informations Personnelles",
                 new Color(59, 89, 152), 1));
         privacy.setBackground(Color.WHITE);
 
         /*Section contact*/
-        contact.add(new JLabel("Adresse"));
         contact.add(adress = new JTextField(15));
-        adress.setPreferredSize(new Dimension(15, 30));
-        contact.add(new JLabel("Email"));
+        adress.setPreferredSize(new Dimension(150, 30));
+        adress.setText("Adresse");
+        adress.setForeground(Color.GRAY);
+        adress.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                adress.setText("");
+                adress.setForeground(Color.BLACK);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (adress.getText().equals("")) {
+                    adress.setText("Adresse");
+                    adress.setForeground(Color.GRAY);
+                } else {
+                    adress.setText(adress.getText());
+                    adress.setForeground(Color.BLACK);
+                }
+            }
+        });
         contact.add(email = new JTextField(15));
-        email.setPreferredSize(new Dimension(15, 30));
-        contact.add(new JLabel("Faxe"));
+        email.setPreferredSize(new Dimension(150, 30));
+        email.setText("E-mail");
+        email.setForeground(Color.GRAY);
+        email.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                email.setText("");
+                email.setForeground(Color.BLACK);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (email.getText().equals("")) {
+                    email.setText("E-mail");
+                    email.setForeground(Color.GRAY);
+                } else {
+                    email.setText(email.getText());
+                    email.setForeground(Color.BLACK);
+                }
+            }
+        });
         contact.add(faxe = new JFormattedTextField(NumberFormat.getIntegerInstance()));
         faxe.setPreferredSize(new Dimension(150, 30));
-        contact.add(new JLabel("Tel Bureau"));
+        faxe.setText("Faxe");
+        faxe.setForeground(Color.GRAY);
+        faxe.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                faxe.setText("");
+                faxe.setForeground(Color.BLACK);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (faxe.getText().equals("")) {
+                    faxe.setText("Faxe");
+                    faxe.setForeground(Color.GRAY);
+                } else {
+                    faxe.setText(faxe.getText());
+                    faxe.setForeground(Color.BLACK);
+                }
+            }
+        });
         contact.add(telOffice = new JFormattedTextField(NumberFormat.getIntegerInstance()));
         telOffice.setPreferredSize(new Dimension(150, 30));
+        telOffice.setText("Telephone Bureau");
+        telOffice.setForeground(Color.GRAY);
+        telOffice.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                telOffice.setText("");
+                telOffice.setForeground(Color.BLACK);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (telOffice.getText().equals("")) {
+                    telOffice.setText("Telephone Bureau");
+                    telOffice.setForeground(Color.GRAY);
+                } else {
+                    telOffice.setText(telOffice.getText());
+                    telOffice.setForeground(Color.BLACK);
+                }
+            }
+        });
         contact.setBorder(WindowUtils.myBorder("Contact",
                 new Color(59, 89, 152), 1));
         contact.setBackground(Color.WHITE);
@@ -594,9 +759,28 @@ public class MainWindow extends JFrame implements ActionListener {
         formSearch.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         /*Ajout des champs*/
-        formSearch.add(new JLabel("Numero"));
         formSearch.add(numToSearch = new JFormattedTextField(NumberFormat.getIntegerInstance()));
         numToSearch.setPreferredSize(new Dimension(150, 30));
+        numToSearch.setText("Numero");
+        numToSearch.setForeground(Color.GRAY);
+        numToSearch.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                numToSearch.setText("");
+                numToSearch.setForeground(Color.BLACK);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (numToSearch.getText().equals("")) {
+                    numToSearch.setText("Numero");
+                    numToSearch.setForeground(Color.GRAY);
+                } else {
+                    numToSearch.setText(numToSearch.getText());
+                    numToSearch.setForeground(Color.BLACK);
+                }
+            }
+        });
         submitSearch = new JButton("Rechercher");
         submitSearch.setBackground(new Color(29, 32, 44));
         submitSearch.setBorderPainted(false);
@@ -781,6 +965,8 @@ public class MainWindow extends JFrame implements ActionListener {
                 formAdd.setVisible(false);
             if (panelSearch.isVisible())
                 panelSearch.setVisible(false);
+            if(panelMembres.isVisible())
+                panelMembres.setVisible(false);
             if (!accueilContent.isVisible() || accueilContent.getParent() == null) {
                 accueil.setForeground(Color.BLACK);
                 accueil.setBackground(Color.CYAN);
@@ -796,6 +982,8 @@ public class MainWindow extends JFrame implements ActionListener {
                 accueilContent.setVisible(false);
             if (panelSearch.isVisible())
                 panelSearch.setVisible(false);
+            if (panelMembres.isVisible())
+                panelMembres.setVisible(false);
             if (!formAdd.isVisible() || formAdd.getParent() == null) {
                 addMember.setForeground(Color.BLACK);
                 addMember.setBackground(Color.CYAN);
@@ -811,6 +999,8 @@ public class MainWindow extends JFrame implements ActionListener {
                 accueilContent.setVisible(false);
             if (formAdd.isVisible())
                 formAdd.setVisible(false);
+            if(panelMembres.isVisible())
+                panelMembres.setVisible(false);
             if (!panelSearch.isVisible() || panelSearch.getParent() == null) {
                 if (panelResultat.getParent() != null) {
                     panelSearch.remove(panelResultat);
@@ -1039,6 +1229,22 @@ public class MainWindow extends JFrame implements ActionListener {
 
 
         }
+
+        if (e.getSource() == membres) {
+            panelMembres.setLayout(new FlowLayout());
+            if (accueilContent.isVisible())
+            accueilContent.setVisible(false);
+            if (formAdd.isVisible())
+                formAdd.setVisible(false);
+            if(searchMember.isVisible())
+                searchMember.setVisible(false);
+            if (!panelMembres.isVisible() || panelMembres.getParent() == null){
+
+            }
+
+        }
+
+
         this.pack();
     }
 
