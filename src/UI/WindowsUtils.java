@@ -49,6 +49,6 @@ class WindowUtils {
         return BorderFactory.createTitledBorder(lineBorder,
                 title,
                 TitledBorder.LEFT, TitledBorder.TOP,
-                new Font("Helvetica Neue", Font.BOLD, 15), Color.BLACK);
+                new Font("Helvetica Neue", Font.BOLD, 15), new Color(29, 32, 44));
     }
 }
