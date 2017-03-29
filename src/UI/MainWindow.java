@@ -2,6 +2,7 @@ package UI;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -17,7 +18,7 @@ import java.sql.Date;
 /**
  * @author amaM on 17/03/17.
  */
-public class MainWindow extends JFrame implements ActionListener {
+public class MainWindow extends JFrame implements ActionListener{
     /**
      * Panneaux qui seront utilises dans notre
      * aplication
@@ -30,11 +31,14 @@ public class MainWindow extends JFrame implements ActionListener {
     private JPanel panelContent/* Panneau qui va gerer le contenu de notre app*/;
     private JPanel accueilContent /*Panneau qui va contenir les elements de la page d'accueil*/;
     private JPanel formAdd /* Panneau qui va contenir le formulaire d'ajout*/;
+    private JPanel formModify /* Panneau qui va contenir le formulaire de modification*/;
     private JPanel formSearch/*Panneau qui va contenir le formulaire de recherche*/;
     private JPanel mainFormation;
     private JPanel formation;
     private JPanel panelSearch;
     private JPanel panelResultat;
+    private JPanel panelMembres;
+
 
     /**
      * Boutons de notre application
@@ -49,6 +53,7 @@ public class MainWindow extends JFrame implements ActionListener {
             rmMember /*Suppression d'un membre*/,
             searchMember /* Bouton de navigation du menu qui charge
                             le formulaire de recherche*/,
+            membres, /* Listes des membres*/
             submitAddMember /* Bouton de validation pour l'ajout*/,
             submitSearch /* Bouton de validation pour la recherche*/,
             submitModifyMember,/*Bouton validation de modif des infos */
@@ -72,14 +77,14 @@ public class MainWindow extends JFrame implements ActionListener {
             firstName /* Prenom du membre */,
             lastName /* Nom du membre */,
             adress /* Adresse du membre */,
-            email /* Email du membre */,
-            dateBirth /* Date de naisance du membre */;
+            email /* Email du membre */;
     private JPasswordField passwd /* Mot de passe du membre  a l'authentification*/;
 
     private JFormattedTextField
             numToSearch /* Numero du membre a chercher*/,
             numPhone /* Numero telephone du membre */,
             faxe /* Faxe du memebre */,
+            dateBirth /* Date de naisance du membre */,
             telOffice /* Telephone bureau du membre*/;
     /**
      * Zone de choix
@@ -90,10 +95,6 @@ public class MainWindow extends JFrame implements ActionListener {
             options = new JComboBox[3] /*Options */,
             annee = new JComboBox[3] /* Annee formation suivie*/;
 
-    private String[]
-            selectedDepartement,
-            selectedOption,
-            selectedNiveau;
 
     private static int nbFormation = 0;
 
@@ -119,15 +120,15 @@ public class MainWindow extends JFrame implements ActionListener {
         footer = WindowUtils.footer();
         textEcranConnexion = WindowUtils.textAccueil();
         textEcranConnexion.setFont(myFont);
+        this.formModify=this.formModify();
         this.formAdd = this.formAdd();
         this.formSearch = this.formSearch();
         this.accueilContent = this.accueilContent();
         panelResultat = new JPanel();
         panelSearch = new JPanel();
+        panelMembres = new JPanel();
         panelSearch.setLayout(new BoxLayout(panelSearch, BoxLayout.PAGE_AXIS));
-        selectedDepartement = new String[6];
-        selectedOption = new String[6];
-        selectedNiveau = new String[6];
+
     }
 
     /**
@@ -137,14 +138,16 @@ public class MainWindow extends JFrame implements ActionListener {
      */
     private JPanel menu() {
         JPanel menu = new JPanel();
-        menu.setLayout(new GridLayout(5, 1));
+        menu.setLayout(new GridLayout(6, 1));
         menu.setBackground(new Color(29, 32, 44));
 
         accueil = new JButton("Accueil");
+        membres = new JButton("Membres");
         searchMember = new JButton("Rechercher");
         addMember = new JButton("Ajouter");
         deconnexion = new JButton("Deconnexion");
         accueil.setFont(new Font("Arial", Font.PLAIN, 20));
+        membres.setFont(new Font("Arial", Font.PLAIN, 20));
         searchMember.setFont(new Font("Arial", Font.PLAIN, 20));
         addMember.setFont(new Font("Arial", Font.PLAIN, 20));
         deconnexion.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -152,12 +155,16 @@ public class MainWindow extends JFrame implements ActionListener {
 
         accueil.addActionListener(this);
         searchMember.addActionListener(this);
+        membres.addActionListener(this);
         addMember.addActionListener(this);
         deconnexion.addActionListener(this);
 
         accueil.setForeground(Color.BLACK);
         accueil.setBorderPainted(false);
         accueil.setOpaque(true);
+        membres.setBackground(new Color(29, 32, 44));
+        membres.setBorderPainted(false);
+        membres.setOpaque(true);
         searchMember.setBackground(new Color(29, 32, 44));
         searchMember.setBorderPainted(false);
         searchMember.setOpaque(true);
@@ -169,6 +176,7 @@ public class MainWindow extends JFrame implements ActionListener {
         deconnexion.setOpaque(true);
         addMember.setForeground(Color.WHITE);
         searchMember.setForeground(Color.WHITE);
+        membres.setForeground(Color.WHITE);
         deconnexion.setForeground(Color.WHITE);
 
         try {
@@ -180,6 +188,7 @@ public class MainWindow extends JFrame implements ActionListener {
             io.printStackTrace();
         }
         menu.add(accueil);
+        menu.add(membres);
         menu.add(addMember);
         menu.add(searchMember);
         menu.add(deconnexion);
@@ -227,7 +236,6 @@ public class MainWindow extends JFrame implements ActionListener {
         panelContent.setLayout(new BorderLayout());
         header.add(panelLogin, BorderLayout.EAST);
         panelContent.add(header, BorderLayout.NORTH);
-        //panelContent.add(textEcranConnexion, BorderLayout.EAST);
         panelContent.add(footer, BorderLayout.SOUTH);
         try {
             BufferedImage myPicture =
@@ -254,7 +262,7 @@ public class MainWindow extends JFrame implements ActionListener {
         JPanel content = new JPanel();
         content.setLayout(new BoxLayout(content, BoxLayout.X_AXIS));
         content.setBackground(new Color(216, 223, 234));
-        JLabel pic, pic1, pic2;
+        JLabel  pic2;
         accueilContent.setLayout(new BorderLayout());
 
         try {
@@ -296,7 +304,6 @@ public class MainWindow extends JFrame implements ActionListener {
             case 0:
                 departements[0].addItemListener(e -> {
                     if (e.getStateChange() == ItemEvent.SELECTED) {
-                        selectedDepartement[0] = (String) e.getItem();
                         switch ((String) departements[0].getSelectedItem()) {
                             case "Genie Informatique":
                                 options[0].removeAllItems();
@@ -357,7 +364,6 @@ public class MainWindow extends JFrame implements ActionListener {
             case 1:
                 departements[1].addItemListener(e -> {
                     if (e.getStateChange() == ItemEvent.SELECTED) {
-                        selectedDepartement[1] = (String) e.getItem();
                         switch ((String) departements[1].getSelectedItem()) {
                             case "Genie Informatique":
                                 options[1].removeAllItems();
@@ -420,7 +426,6 @@ public class MainWindow extends JFrame implements ActionListener {
             case 2:
                 departements[2].addItemListener(e -> {
                     if (e.getStateChange() == ItemEvent.SELECTED) {
-                        selectedDepartement[2] = (String) e.getItem();
                         switch ((String) departements[2].getSelectedItem()) {
                             case "Genie Informatique":
                                 options[2].removeAllItems();
@@ -529,8 +534,16 @@ public class MainWindow extends JFrame implements ActionListener {
         privacy.add(lastName = new JTextField(15));
         lastName.setPreferredSize(new Dimension(15, 30));
         privacy.add(new JLabel("Date de Naissance"));
-        privacy.add(dateBirth = new JTextField(15));
+        privacy.add(dateBirth = new JFormattedTextField(new SimpleDateFormat("yyyy-mm-dd")));
         dateBirth.setPreferredSize(new Dimension(150, 30));
+    try {
+        MaskFormatter dateMask = new MaskFormatter("####-##-##");
+        dateMask.install(dateBirth);
+    }
+    catch (Exception ex) {
+        System.err.println("Got an exception! ");
+        ex.printStackTrace();
+    }
         privacy.setBorder(WindowUtils.myBorder("Informations Personnelles",
                 new Color(59, 89, 152), 2));
         privacy.setBackground(Color.WHITE);
@@ -635,8 +648,17 @@ public class MainWindow extends JFrame implements ActionListener {
         privacy.add(lastName = new JTextField(15));
         lastName.setPreferredSize(new Dimension(15, 30));
         privacy.add(new JLabel("Date de Naissance"));
-        privacy.add(dateBirth = new JTextField(15));
+        privacy.add(dateBirth = new JFormattedTextField(new SimpleDateFormat("yyyy-mm-dd")));
         dateBirth.setPreferredSize(new Dimension(150, 30));
+        try {
+            MaskFormatter dateMask = new MaskFormatter("####-##-##");
+            dateMask.install(dateBirth);
+        }
+        catch (Exception ex) {
+            System.err.println("Got an exception! ");
+            ex.printStackTrace();
+        }
+
         privacy.setBorder(WindowUtils.myBorder("Informations Personnelles",
                 new Color(59, 89, 152), 2));
         privacy.setBackground(Color.WHITE);
@@ -741,8 +763,8 @@ public class MainWindow extends JFrame implements ActionListener {
 
     private void actionModifyMember() {
         panelContent.repaint();
-        this.formAdd = this.formModify();
-        panelContent.add(formAdd, BorderLayout.CENTER);
+        this.formModify = this.formModify();
+        panelContent.add(formModify, BorderLayout.CENTER);
     }
 
     @Override
@@ -765,10 +787,16 @@ public class MainWindow extends JFrame implements ActionListener {
             addMember.setBackground(new Color(29, 32, 44));
             searchMember.setForeground(Color.WHITE);
             searchMember.setBackground(new Color(29, 32, 44));
+            membres.setForeground(Color.WHITE);
+            membres.setBackground(new Color(29, 32, 44));
             if (formAdd.isVisible())
                 formAdd.setVisible(false);
+            if (formModify.isVisible())
+                formModify.setVisible(false);
             if (panelSearch.isVisible())
                 panelSearch.setVisible(false);
+            if(panelMembres.isVisible())
+                panelMembres.setVisible(false);
             if (!accueilContent.isVisible() || accueilContent.getParent() == null) {
                 accueil.setForeground(Color.BLACK);
                 accueil.setBackground(Color.CYAN);
@@ -780,25 +808,40 @@ public class MainWindow extends JFrame implements ActionListener {
             accueil.setBackground(new Color(29, 32, 44));
             searchMember.setForeground(Color.WHITE);
             searchMember.setBackground(new Color(29, 32, 44));
+            membres.setForeground(Color.WHITE);
+            membres.setBackground(new Color(29, 32, 44));
             if (accueilContent.isVisible())
                 accueilContent.setVisible(false);
             if (panelSearch.isVisible())
                 panelSearch.setVisible(false);
+            if (formModify.isVisible()) {
+                formModify.setVisible(false);
+                nbFormation=0;
+            }
+            if(panelMembres.isVisible())
+                panelMembres.setVisible(false);
             if (!formAdd.isVisible() || formAdd.getParent() == null) {
                 addMember.setForeground(Color.BLACK);
                 addMember.setBackground(Color.CYAN);
                 this.actionAddMember();
             }
+
         }
         if (e.getSource() == searchMember) {
             accueil.setForeground(Color.WHITE);
             accueil.setBackground(new Color(29, 32, 44));
             addMember.setForeground(Color.WHITE);
             addMember.setBackground(new Color(29, 32, 44));
+            membres.setForeground(Color.WHITE);
+            membres.setBackground(new Color(29, 32, 44));
             if (accueilContent.isVisible())
                 accueilContent.setVisible(false);
             if (formAdd.isVisible())
                 formAdd.setVisible(false);
+            if (formModify.isVisible())
+                formModify.setVisible(false);
+            if(panelMembres.isVisible())
+                panelMembres.setVisible(false);
             if (!panelSearch.isVisible() || panelSearch.getParent() == null) {
                 if (panelResultat.getParent() != null) {
                     panelSearch.remove(panelResultat);
@@ -833,7 +876,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
             try {
                 if (!(numToSearch.getText().equals("")) && Operation.existe(numToSearch.getText())) {
-
+                    panelResultat.setVisible(true);
                     panelResultat.removeAll();
                     panelResultat.setLayout(new BoxLayout(panelResultat, BoxLayout.PAGE_AXIS));
                     Membre membre = Operation.chercherMembre(numToSearch.getText());
@@ -863,7 +906,6 @@ public class MainWindow extends JFrame implements ActionListener {
                             new Color(59, 89, 152), 2));
 
                     int i = (membre.getFormation().length) - 1;
-                    System.out.println(membre.getFormation().length);
                     while (i >= 0) {
                         panelResForm.add(new JLabel(membre.getFormation()[i].getDepartement() + " \t\t " + membre.getFormation()[i].getOption() + " \t\t "
                                 + membre.getFormation()[i].getNiveau() + " \t\t " + membre.getFormation()[i].getAnnee()));
@@ -915,16 +957,21 @@ public class MainWindow extends JFrame implements ActionListener {
                     if (!Operation.existe(numPhone.getText())) {
 
                         Formation[] formation = new Formation[nbFormation + 1];
-                        System.out.println("nbformation = " + nbFormation);
-
-                        for (int i = 0; i < nbFormation + 1; i++) {
+                        int i;
+                        for (i = 0; i <= nbFormation ; i++) {
+                            if(departements[i].getSelectedItem().toString().equals("")||options[i].getSelectedItem().toString().equals("")||niveau[i].getSelectedItem().toString().equals(""))
+                                break;
+                            else
                             formation[i] = new Formation((String) departements[i].getSelectedItem(), (String) niveau[i].getSelectedItem(),
                                     (String) options[i].getSelectedItem(), (String) annee[i].getSelectedItem());
                         }
-                        Operation.ajouterMembre(new Membre(numPhone.getText(), firstName.getText(), lastName.getText(),
-                                dateBirth.getText(), email.getText(), adress.getText(), telOffice.getText(), faxe.getText(), formation));
-                        JOptionPane.showMessageDialog(panelLogin, "Ajout effectué avec succès");
-
+                        if(i<=nbFormation)
+                            JOptionPane.showMessageDialog(formModify,"Veuillez remplir tous les champs");
+                        else {
+                            Operation.ajouterMembre(new Membre(numPhone.getText(), firstName.getText(), lastName.getText(),
+                                    dateBirth.getText(), email.getText(), adress.getText(), telOffice.getText(), faxe.getText(), formation));
+                            JOptionPane.showMessageDialog(panelLogin, "Ajout effectué avec succès");
+                        }
                     } else
                         JOptionPane.showMessageDialog(panelLogin, "Login deja pris");
                 }
@@ -951,17 +998,19 @@ public class MainWindow extends JFrame implements ActionListener {
         }
         if (e.getSource() == editMember) {
             try {
+                nbFormation=0;
                 if (accueilContent.isVisible())
                     accueilContent.setVisible(false);
                 if (panelSearch.isVisible())
                     panelSearch.setVisible(false);
-                if (!formModify().isVisible() || formAdd.getParent() == null)
+                if(panelMembres.isVisible())
+                    panelMembres.setVisible(false);
+                if (!formModify.isVisible() || formModify.getParent() == null)
                     this.actionModifyMember();
                 Membre membre = Operation.chercherMembre(numToSearch.getText());
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
                 firstName.setText(membre.getNom());
                 lastName.setText(membre.getPrenom());
-                dateBirth.setText(formatter.format(membre.getDateNaiss()));
+                dateBirth.setText((membre.getDateNaiss()));
                 email.setText(membre.getEmail());
                 adress.setText(membre.getAdresse());
                 numPhone.setText(membre.getTel());
@@ -971,7 +1020,7 @@ public class MainWindow extends JFrame implements ActionListener {
                 niveau[0].setSelectedItem(membre.getFormation()[0].getNiveau());
                 options[0].setSelectedItem(membre.getFormation()[0].getOption());
                 annee[0].setSelectedItem(membre.getFormation()[0].getAnnee());
-                for (nbFormation = 1; nbFormation < membre.getFormation().length; nbFormation++) {
+                for (nbFormation = 1; nbFormation <membre.getFormation().length; nbFormation++) {
                     formation.add(this.formFormation());
                     formation.remove(addFormation);
                     formation.repaint();
@@ -982,8 +1031,6 @@ public class MainWindow extends JFrame implements ActionListener {
                     annee[nbFormation].setSelectedItem(membre.getFormation()[nbFormation].getAnnee());
                 }
                 nbFormation--;
-                formAdd.remove(submitAddMember);
-                formation.repaint();
             } catch (Exception ex) {
 
                 System.err.println("Got an exception! ");
@@ -1003,6 +1050,7 @@ public class MainWindow extends JFrame implements ActionListener {
                 membre.setTelBureau(telOffice.getText());
                 membre.setFaxe(faxe.getText());
                 Operation.modifyMembre(membre);
+                JOptionPane.showMessageDialog(formModify,"Modification effectué avec succès");
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
@@ -1010,22 +1058,65 @@ public class MainWindow extends JFrame implements ActionListener {
         }
         if (e.getSource() == submitModifyFormation) {
             try {
-                Membre membre = Operation.chercherMembre(numPhone.getText());
-                System.out.println(nbFormation + "eee");
-                Formation[] formation = new Formation[nbFormation + 1];
-                for (int i = 0; i <= nbFormation; i++) {
-                    formation[i] = new Formation((String) departements[i].getSelectedItem(), (String) niveau[i].getSelectedItem(),
+                    Membre membre = Operation.chercherMembre(numPhone.getText());
+                    Formation[] formation = new Formation[nbFormation + 1];
+                    int i;
+                    for ( i = 0; i <= nbFormation; i++) {
+                        if(departements[i].getSelectedItem().toString().equals("")||options[i].getSelectedItem().toString().equals("")||niveau[i].getSelectedItem().toString().equals(""))
+                            break;
+                        else
+                        formation[i] = new Formation((String) departements[i].getSelectedItem(), (String) niveau[i].getSelectedItem(),
                             (String) options[i].getSelectedItem(), (String) annee[i].getSelectedItem());
-                }
-                System.out.println(nbFormation + "eee");
+                    }
+                    if(i<=nbFormation)
+                        JOptionPane.showMessageDialog(formModify,"Veuillez remplir tous les champs");
+                    else {
+                        Operation.modifyFormation(formation, membre.getTel());
+                        JOptionPane.showMessageDialog(formModify,"Modification effectué avec succès");
+                    }
 
-                System.out.println(formation[1].getOption());
-                Operation.modifyFormation(formation, membre.getTel());
-            } catch (Exception e1) {
+            }
+            catch (Exception e1) {
                 e1.printStackTrace();
             }
+        }
+        if (e.getSource() == membres) {
+            panelMembres.setLayout(new BoxLayout(panelMembres,BoxLayout.PAGE_AXIS));
+            accueil.setForeground(Color.WHITE);
+            accueil.setBackground(new Color(29, 32, 44));
+            addMember.setForeground(Color.WHITE);
+            addMember.setBackground(new Color(29, 32, 44));
+            searchMember.setForeground(Color.WHITE);
+            searchMember.setBackground(new Color(29, 32, 44));
+            if (accueilContent.isVisible())
+                accueilContent.setVisible(false);
+            if (formAdd.isVisible())
+                formAdd.setVisible(false);
+            if (panelSearch.isVisible())
+                panelSearch.setVisible(false);
+            if (!panelMembres.isVisible() || panelMembres.getParent() == null) {
+                try {
+                    panelMembres.setVisible(true);
+                    Membre[] personnes = Operation.lister();
+                    for (int i=0 ;i<personnes.length;i++){
+                        JPanel panel = new JPanel();
+                        panel.setLayout(new FlowLayout(FlowLayout.CENTER));
+                        panel.add(new JLabel(personnes[i].getTel()));
+                        panel.add(new JLabel(personnes[i].getNom()));
+                        panel.add(new JLabel(personnes[i].getPrenom()));
+                        panelMembres.add(panel);
+                    }
+                    membres.setForeground(Color.BLACK);
+                    membres.setBackground(Color.CYAN);
+                    panelMembres.setBorder(WindowUtils.myBorder("Membres", new Color(29,32,44),1));
+                    panelContent.add(panelMembres,BorderLayout.CENTER);
 
+                } catch (Exception ex) {
+                    System.err.println("Got an exception! ");
+                    ex.printStackTrace();
+                }
 
+            }
         }
         this.pack();
     }

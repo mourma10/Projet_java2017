@@ -7,7 +7,7 @@ public class Membre {
 	private String tel ;
 	private String prenom ;
 	private String nom ;
-	private Date dateNaiss ;
+	private String dateNaiss ;
 	private String email ;
 	private String adresse ;
 	private String telBureau ;
@@ -23,7 +23,7 @@ public class Membre {
 		this.tel=tel ;
 		this.nom=nom ;
 		this.prenom=prenom ;
-		this.dateNaiss= new Date (this.formatter.parse(dateNaiss).getTime());
+		this.dateNaiss= dateNaiss;
 		this.email=email ;
 		this.adresse = adresse ;
 		this.telBureau=telBureau ;
@@ -44,7 +44,7 @@ public class Membre {
 		return this.prenom ;
 	}
 
-	public java.sql.Date getDateNaiss(){
+	public String getDateNaiss(){
 		return this.dateNaiss ;
 	}
 
@@ -81,12 +81,8 @@ public class Membre {
 		this.prenom=prenom ;
 	}
 
-	public void setDateNaiss(String dateNaiss){
-		try {
-			this.dateNaiss = new Date (this.formatter.parse(dateNaiss).getTime()) ;
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+	public void setDateNaiss(String dateNaiss) {
+		this.dateNaiss = dateNaiss;
 	}
 
 	public void setEmail(String email){
