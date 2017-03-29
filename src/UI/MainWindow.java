@@ -213,7 +213,7 @@ public class MainWindow extends JFrame implements ActionListener {
         connexion.addActionListener(this);
         panelLogin.add(connexion);
 
-        panelLogin.setBorder(WindowUtils.myBorder("connexion", Color.WHITE, 1));
+        panelLogin.setBorder(WindowUtils.myBorder("", Color.WHITE, 1));
 
         return panelLogin;
     }
@@ -227,7 +227,6 @@ public class MainWindow extends JFrame implements ActionListener {
         panelContent.setLayout(new BorderLayout());
         header.add(panelLogin, BorderLayout.EAST);
         panelContent.add(header, BorderLayout.NORTH);
-        //panelContent.add(textEcranConnexion, BorderLayout.EAST);
         panelContent.add(footer, BorderLayout.SOUTH);
         try {
             BufferedImage myPicture =
@@ -278,7 +277,7 @@ public class MainWindow extends JFrame implements ActionListener {
                 "Genie Civil", "Genie Chimique et BA", "Gestion"},
                 libNiveauICE = {"", "DUT", "DIC", "DST", "Licence", "Master"},
                 libNiveauM = {"", "DUT", "DIC", "Licence", "Master"},
-                libNiveauC = {"", "DUT", "DST", "DIC", "Licence", "DIT","Master"},
+                libNiveauC = {"", "DUT", "DST", "DIC", "Licence", "DIT", "Master"},
                 libNiveauG = {"", "DUT", "DST", "DEC", "DESECG", "Licence", "Master", "DESCAF"};
 
         formation.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
@@ -516,7 +515,6 @@ public class MainWindow extends JFrame implements ActionListener {
         contact.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
         formation.setLayout(new BoxLayout(formation, BoxLayout.Y_AXIS));
 
-        /*Section login et mot de passe*/
 
         /*Section informations personnelles*/
         privacy.add(new JLabel("Telephone"));
@@ -532,7 +530,7 @@ public class MainWindow extends JFrame implements ActionListener {
         privacy.add(dateBirth = new JTextField(15));
         dateBirth.setPreferredSize(new Dimension(150, 30));
         privacy.setBorder(WindowUtils.myBorder("Informations Personnelles",
-                new Color(59, 89, 152), 2));
+                new Color(59, 89, 152), 1));
         privacy.setBackground(Color.WHITE);
 
         /*Section contact*/
@@ -549,26 +547,30 @@ public class MainWindow extends JFrame implements ActionListener {
         contact.add(telOffice = new JFormattedTextField(NumberFormat.getIntegerInstance()));
         telOffice.setPreferredSize(new Dimension(150, 30));
         contact.setBorder(WindowUtils.myBorder("Contact",
-                new Color(59, 89, 152), 2));
+                new Color(59, 89, 152), 1));
         contact.setBackground(Color.WHITE);
 
         /*Section formations*/
         addFormation = new JButton("Autre formation");
-        addFormation.setBackground(new Color(59, 89, 152));
+        addFormation.setBorderPainted(false);
+        addFormation.setOpaque(true);
+        addFormation.setBackground(new Color(29, 32, 44));
         addFormation.setForeground(Color.WHITE);
         addFormation.addActionListener(this);
         formation.setBackground(Color.WHITE);
         formation.add(this.formFormation());
         formation.setBorder(WindowUtils.myBorder("Formations Suivies",
-                new Color(59, 89, 152), 2));
+                new Color(59, 89, 152), 1));
         formation.add(addFormation);
 
 
         /*Bouton de validation*/
         submitAddMember = new JButton("Ajouter Membre");
-        submitAddMember.setFont(new Font("Arial", Font.BOLD, 22));
+        submitAddMember.setBorderPainted(false);
+        submitAddMember.setOpaque(true);
+        submitAddMember.setFont(new Font("Arial", Font.BOLD, 30));
         submitAddMember.addActionListener(this);
-        submitAddMember.setBackground(new Color(59, 89, 152));
+        submitAddMember.setBackground(new Color(29, 32, 44));
         submitAddMember.setForeground(Color.WHITE);
 
         /*Ajout des differents panneaux dans le panneau formAdd */
@@ -596,12 +598,14 @@ public class MainWindow extends JFrame implements ActionListener {
         formSearch.add(numToSearch = new JFormattedTextField(NumberFormat.getIntegerInstance()));
         numToSearch.setPreferredSize(new Dimension(150, 30));
         submitSearch = new JButton("Rechercher");
-        submitSearch.setBackground(new Color(59, 89, 152));
+        submitSearch.setBackground(new Color(29, 32, 44));
+        submitSearch.setBorderPainted(false);
+        submitSearch.setOpaque(true);
         submitSearch.setForeground(Color.WHITE);
         submitSearch.addActionListener(this);
         formSearch.add(submitSearch);
         formSearch.setBorder(WindowUtils.myBorder("Recherche",
-                new Color(59, 89, 152), 2));
+                new Color(29, 32, 34), 1));
         formSearch.setBackground(Color.WHITE);
         return formSearch;
     }
@@ -638,7 +642,7 @@ public class MainWindow extends JFrame implements ActionListener {
         privacy.add(dateBirth = new JTextField(15));
         dateBirth.setPreferredSize(new Dimension(150, 30));
         privacy.setBorder(WindowUtils.myBorder("Informations Personnelles",
-                new Color(59, 89, 152), 2));
+                new Color(29, 32, 34), 1));
         privacy.setBackground(Color.WHITE);
 
 
@@ -657,28 +661,32 @@ public class MainWindow extends JFrame implements ActionListener {
         contact.add(telOffice = new JFormattedTextField(NumberFormat.getIntegerInstance()));
         telOffice.setPreferredSize(new Dimension(150, 30));
         contact.setBorder(WindowUtils.myBorder("Contact",
-                new Color(59, 89, 152), 2));
+                new Color(29, 32, 34), 1));
         contact.setBackground(Color.WHITE);
 
         /*Bouton de validation*/
         submitModifyMember = new JButton("Modifier");
         submitModifyMember.addActionListener(this);
-        submitModifyMember.setBackground(new Color(59, 89, 152));
+        submitModifyMember.setBackground(new Color(29, 32, 34));
         submitModifyMember.setForeground(Color.WHITE);
 
         /*Section formations*/
         addFormation = new JButton("+Ajouter une formation");
         addFormation.addActionListener(this);
-        formation.setBackground(Color.WHITE);
+        addFormation.setBorderPainted(false);
+        addFormation.setOpaque(true);
+        formation.setBackground(new Color(29, 32, 44));
         formation.add(this.formFormation());
         formation.setBorder(WindowUtils.myBorder("Formations Suivies",
-                new Color(59, 89, 152), 2));
-        addFormation.setBackground(new Color(216, 223, 234));
+                new Color(29, 32, 34), 2));
+        addFormation.setBackground(new Color(29, 32, 44));
         formation.add(addFormation);
         /*Bouton de validation*/
         submitModifyFormation = new JButton("Modifier");
         submitModifyFormation.addActionListener(this);
-        submitModifyFormation.setBackground(new Color(59, 89, 152));
+        submitModifyFormation.setBackground(new Color(29, 32, 34));
+        submitModifyFormation.setBorderPainted(false);
+        submitModifyFormation.setOpaque(true);
         submitModifyFormation.setForeground(Color.WHITE);
         submitModifyMember.addActionListener(this);
         submitModifyFormation.addActionListener(this);
@@ -739,6 +747,10 @@ public class MainWindow extends JFrame implements ActionListener {
         panelContent.add(formAdd, BorderLayout.CENTER);
     }
 
+    /**
+     * Routine qui sera executee lors de
+     * l'evenement click sur le bouton addMember
+     */
     private void actionModifyMember() {
         panelContent.repaint();
         this.formAdd = this.formModify();
@@ -858,9 +870,9 @@ public class MainWindow extends JFrame implements ActionListener {
                     panelResInfo.add(new JLabel(membre.getEmail()));
 
                     panelResInfo.setBorder(WindowUtils.myBorder("Info",
-                            new Color(59, 89, 152), 2));
+                            new Color(29, 32, 34), 1));
                     panelResForm.setBorder(WindowUtils.myBorder("Formation",
-                            new Color(59, 89, 152), 2));
+                            new Color(29, 32, 34), 1));
 
                     int i = (membre.getFormation().length) - 1;
                     System.out.println(membre.getFormation().length);
@@ -871,7 +883,7 @@ public class MainWindow extends JFrame implements ActionListener {
                     }
 
                     panelResultat.setBorder(WindowUtils.myBorder("Resultat",
-                            new Color(59, 89, 152), 2));
+                            new Color(29, 32, 34), 1));
                     panelResInfo.setBackground(Color.WHITE);
                     panelResForm.setBackground(Color.WHITE);
                     panelResultat.setBackground(Color.WHITE);
@@ -926,7 +938,7 @@ public class MainWindow extends JFrame implements ActionListener {
                         JOptionPane.showMessageDialog(panelLogin, "Ajout effectué avec succès");
 
                     } else
-                        JOptionPane.showMessageDialog(panelLogin, "Login deja pris");
+                        JOptionPane.showMessageDialog(panelLogin, "Ce membre existe deja");
                 }
 
             } catch (Exception ex) {
