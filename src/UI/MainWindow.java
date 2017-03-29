@@ -2,6 +2,7 @@ package UI;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -74,15 +75,15 @@ public class MainWindow extends JFrame implements ActionListener {
             firstName /* Prenom du membre */,
             lastName /* Nom du membre */,
             adress /* Adresse du membre */,
-            email /* Email du membre */,
-            dateBirth /* Date de naisance du membre */;
+            email /* Email du membre */;
     private JPasswordField passwd /* Mot de passe du membre  a l'authentification*/;
 
     private JFormattedTextField
             numToSearch /* Numero du membre a chercher*/,
             numPhone /* Numero telephone du membre */,
             faxe /* Faxe du memebre */,
-            telOffice /* Telephone bureau du membre*/;
+            dateBirth /* Date de naisance du membre */,
+    telOffice /* Telephone bureau du membre*/;
     /**
      * Zone de choix
      */
@@ -179,6 +180,8 @@ public class MainWindow extends JFrame implements ActionListener {
         addMember.setForeground(Color.WHITE);
         searchMember.setForeground(Color.WHITE);
         deconnexion.setForeground(Color.WHITE);
+        membres.setForeground(Color.WHITE);
+
 
         try {
             BufferedImage mylogo =
@@ -596,7 +599,14 @@ public class MainWindow extends JFrame implements ActionListener {
                 }
             }
         });
-        privacy.add(dateBirth = new JTextField(15));
+        privacy.add(dateBirth = new JFormattedTextField(new SimpleDateFormat("yyyy-mm-dd")));
+        try {
+            MaskFormatter dateMask = new MaskFormatter("####-##-##");
+            dateMask.install(dateBirth);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         dateBirth.setPreferredSize(new Dimension(150, 30));
         dateBirth.setText("yyyy-mm-dd");
         dateBirth.setForeground(Color.GRAY);
@@ -823,8 +833,14 @@ public class MainWindow extends JFrame implements ActionListener {
         privacy.add(lastName = new JTextField(15));
         lastName.setPreferredSize(new Dimension(15, 30));
         privacy.add(new JLabel("Date de Naissance"));
-        privacy.add(dateBirth = new JTextField(15));
-        dateBirth.setPreferredSize(new Dimension(150, 30));
+        privacy.add(dateBirth = new JFormattedTextField(new SimpleDateFormat("yyyy-mm-dd")));
+        try {
+            MaskFormatter dateMask = new MaskFormatter("####-##-##");
+            dateMask.install(dateBirth);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }        dateBirth.setPreferredSize(new Dimension(150, 30));
         privacy.setBorder(WindowUtils.myBorder("Informations Personnelles",
                 new Color(29, 32, 34), 1));
         privacy.setBackground(Color.WHITE);
@@ -961,6 +977,8 @@ public class MainWindow extends JFrame implements ActionListener {
             addMember.setBackground(new Color(29, 32, 44));
             searchMember.setForeground(Color.WHITE);
             searchMember.setBackground(new Color(29, 32, 44));
+            membres.setForeground(Color.WHITE);
+            membres.setBackground(new Color(29, 32, 44));
             if (formAdd.isVisible())
                 formAdd.setVisible(false);
             if (panelSearch.isVisible())
@@ -978,6 +996,8 @@ public class MainWindow extends JFrame implements ActionListener {
             accueil.setBackground(new Color(29, 32, 44));
             searchMember.setForeground(Color.WHITE);
             searchMember.setBackground(new Color(29, 32, 44));
+            membres.setForeground(Color.WHITE);
+            membres.setBackground(new Color(29, 32, 44));
             if (accueilContent.isVisible())
                 accueilContent.setVisible(false);
             if (panelSearch.isVisible())
@@ -995,12 +1015,15 @@ public class MainWindow extends JFrame implements ActionListener {
             accueil.setBackground(new Color(29, 32, 44));
             addMember.setForeground(Color.WHITE);
             addMember.setBackground(new Color(29, 32, 44));
+            membres.setForeground(Color.WHITE);
+            membres.setBackground(new Color(29, 32, 44));
             if (accueilContent.isVisible())
                 accueilContent.setVisible(false);
             if (formAdd.isVisible())
                 formAdd.setVisible(false);
             if(panelMembres.isVisible())
                 panelMembres.setVisible(false);
+
             if (!panelSearch.isVisible() || panelSearch.getParent() == null) {
                 if (panelResultat.getParent() != null) {
                     panelSearch.remove(panelResultat);
@@ -1157,6 +1180,8 @@ public class MainWindow extends JFrame implements ActionListener {
                     accueilContent.setVisible(false);
                 if (panelSearch.isVisible())
                     panelSearch.setVisible(false);
+                if (panelMembres.isVisible())
+                    panelMembres.setVisible(false);
                 if (!formModify().isVisible() || formAdd.getParent() == null)
                     this.actionModifyMember();
                 Membre membre = Operation.chercherMembre(numToSearch.getText());
@@ -1231,14 +1256,42 @@ public class MainWindow extends JFrame implements ActionListener {
         }
 
         if (e.getSource() == membres) {
-            panelMembres.setLayout(new FlowLayout());
+            panelMembres.setLayout(new BoxLayout(panelMembres,BoxLayout.PAGE_AXIS));
+            accueil.setForeground(Color.WHITE);
+            accueil.setBackground(new Color(29, 32, 44));
+            addMember.setForeground(Color.WHITE);
+            addMember.setBackground(new Color(29, 32, 44));
+            searchMember.setForeground(Color.WHITE);
+            searchMember.setBackground(new Color(29, 32, 44));
             if (accueilContent.isVisible())
-            accueilContent.setVisible(false);
+                accueilContent.setVisible(false);
             if (formAdd.isVisible())
                 formAdd.setVisible(false);
-            if(searchMember.isVisible())
-                searchMember.setVisible(false);
+            if(panelSearch.isVisible())
+                panelSearch.setVisible(false);
             if (!panelMembres.isVisible() || panelMembres.getParent() == null){
+                try {
+                    panelMembres.setVisible(true);
+                    Membre [] personnes = Operation.lister();
+                    for (int i =0 ;i<personnes.length;i++){
+                        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+                        panel.add(new JLabel(personnes[i].getTel()));
+                        panel.add(new JLabel(personnes[i].getNom()));
+                        panel.add(new JLabel(personnes[i].getPrenom()));
+                        panelMembres.add(panel);
+                    }
+                    panelContent.add(panelMembres);
+                    membres.setForeground(Color.BLACK);
+                    membres.setBackground(Color.CYAN);
+
+
+                }
+                catch(Exception ex)
+                {
+                    ex.printStackTrace();
+                }
+
+
 
             }
 
